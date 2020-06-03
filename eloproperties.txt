@@ -1,0 +1,4 @@
+#EloProperties
+#Wed Jun 03 15:35:05 CEST 2020
+SelectedProfile=contract
+SelectedEloCli=eloPrepare
