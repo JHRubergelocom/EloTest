@@ -102,6 +102,15 @@ class EloProperties  extends Properties {
         saveProperties();        
     }
     
+    String getSelectedUnittestTools() {
+        return getProperty("SelectedUnittestTools"); 
+    }
+
+    void setSelectedUnittestTools(String name) {
+        setProperty("SelectedUnittestTools", name);   
+        saveProperties();        
+    }    
+    
     void setPattern(String pattern) {
         setProperty("Pattern", pattern);   
         saveProperties();

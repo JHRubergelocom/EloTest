@@ -12,8 +12,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
@@ -31,6 +29,7 @@ public class EloTest extends Application {
     
     private final Profiles profiles = new Profiles("Profiles.json");
     private final EloProperties eloProperties = new EloProperties();
+    private final EloService eloService = new EloService();
     
     private final Label lblProfile = new Label(); 
     private final ListView<String> listvProfile = new ListView<>(); 
@@ -72,7 +71,7 @@ public class EloTest extends Application {
         } else {
             listvProfile.getSelectionModel().select(0);                    
         }
-        
+/*        
         listvProfile.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 String currentItemSelected = listvProfile.getSelectionModel().getSelectedItem();
@@ -83,7 +82,7 @@ public class EloTest extends Application {
                 alert.showAndWait();
             }
         });      
-        
+*/        
         listvProfile.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             System.out.println("Selected item: " + newValue);
             eloProperties.setSelectedProfile(newValue);
@@ -103,8 +102,7 @@ public class EloTest extends Application {
                 
         fillListView(lblEloCli, "ELO Cli", listvEloCli, entries);        
     }
-    
-    
+      
     private void initListViewEloCli() {
         fillListViewEloCli();        
         String selectedEloCliName = eloProperties.getSelectedEloCli();
@@ -116,24 +114,19 @@ public class EloTest extends Application {
         
         listvEloCli.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
-                setDisableControls(true);
                 String currentItemSelected = listvEloCli.getSelectionModel().getSelectedItem();
-                
+                /*
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Achtung!");
                 alert.setHeaderText("Doppelclick");
                 alert.setContentText(currentItemSelected);
                 alert.showAndWait();
-                // TODO EloCommand ausführen
-                
-                setDisableControls(false);
-                
-                
-                
+                */
+                String pname = listvProfile.getSelectionModel().getSelectedItem();
+                Profile profile = profiles.getProfiles().get(pname);
+                EloCommand eloCommand = profile.getEloCommands().get(currentItemSelected);
+                eloService.runEloCommand(eloCommand, profile, profiles, this);                
             }
-            
-            
-            // TODO
         });      
         
         listvEloCli.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
@@ -144,7 +137,53 @@ public class EloTest extends Application {
         
     }
     
-    private void setDisableControls(boolean value) {
+    private void fillListViewUnittestTools() {        
+        final ArrayList<String> entries = new ArrayList<>();
+        entries.add("show");
+        entries.add("matching");
+        entries.add("create");
+        entries.add("ranger");
+        entries.add("gitpullall");
+        fillListView(lblUnittestTools, "Unittest Tools", listvUnittestTools, entries);
+    }
+
+    private void initListViewUnittestTools() {
+        fillListViewUnittestTools();        
+        String selectedUnittestToolsName = eloProperties.getSelectedUnittestTools();
+        if (selectedUnittestToolsName != null) {
+            listvUnittestTools.getSelectionModel().select(selectedUnittestToolsName);            
+        } else {
+            listvUnittestTools.getSelectionModel().select(0);                    
+        }
+        
+        listvUnittestTools.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getClickCount() == 2) {
+                String currentItemSelected = listvUnittestTools.getSelectionModel().getSelectedItem();
+                
+                /*
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Achtung!");
+                alert.setHeaderText("Doppelclick");
+                alert.setContentText(currentItemSelected);
+                alert.showAndWait();
+                */ 
+                String pname = listvProfile.getSelectionModel().getSelectedItem();
+                Profile profile = profiles.getProfiles().get(pname);
+                eloService.runUnittestTools(currentItemSelected, profile, profiles, this);
+            }
+        });      
+        
+        listvUnittestTools.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            System.out.println("Selected item: " + newValue);
+            eloProperties.setSelectedUnittestTools(newValue);
+        });   
+        
+    }
+
+
+    
+    
+    public void setDisableControls(boolean value) {
         lblProfile.setDisable(value);
         listvProfile.setDisable(value);        
         lblEloCli.setDisable(value);
@@ -174,23 +213,9 @@ public class EloTest extends Application {
         
         initListViewEloCli();
         
-/*                
-        ArrayList<String> entries = new ArrayList<>();
-        entries.add("elocli1");
-        entries.add("elocli2");
-        entries.add("elocli3");
-        fillListView(lblEloCli, "ELO Cli", listvEloCli, entries);
-*/        
+        initListViewUnittestTools();
         
-        ArrayList<String> entries = new ArrayList<>();
-        entries.add("show");
-        entries.add("adjust");
-        entries.add("create");
-        entries.add("ranger");
-        entries.add("gitpullall");
-        fillListView(lblUnittestTools, "Unittest Tools", listvUnittestTools, entries);
-        
-        entries = new ArrayList<>();
+        final ArrayList<String> entries = new ArrayList<>();
         entries.add("Application Server");
         entries.add("Admin Console");
         entries.add("App Manager");

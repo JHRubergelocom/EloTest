@@ -1,4 +1,5 @@
 #EloProperties
-#Wed Jun 03 15:35:05 CEST 2020
-SelectedProfile=contract
+#Thu Jun 04 14:20:45 CEST 2020
+SelectedProfile=visitor
 SelectedEloCli=eloPrepare
+SelectedUnittestTools=show

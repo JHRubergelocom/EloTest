@@ -5,6 +5,7 @@
  */
 package elotest;
 
+import de.elo.ix.client.IXConnection;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,6 +14,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -31,6 +34,9 @@ class EloService extends Service<Boolean>{
     private EloCommand eloCommand;
     private Profile profile;
     private Profiles profiles;
+    private EloTest eloTest;
+    private String unittestTool;
+    private IXConnection ixConn;
     
     private void setTypeCommand(String typeCommand) {
         this.typeCommand = typeCommand;
@@ -48,8 +54,18 @@ class EloService extends Service<Boolean>{
         this.profiles = profiles;
     }
     
+    private void setEloTest(EloTest eloTest) {
+        this.eloTest = eloTest;
+    }
     
-    // TODO ExecuteEloCommand
+    private void setUnittestTool(String unittestTool) {
+        this.unittestTool = unittestTool;        
+    }
+
+    private void setIxConn(IXConnection ixConn) {
+        this.ixConn = ixConn;        
+    }
+    
     private void executeEloCli() {
         try {
             String psCommand = eloCommand.getCmd() + " -stack " + profile.getStack(profiles.getGitUser()) + " -workspace " + eloCommand.getWorkspace();
@@ -116,12 +132,110 @@ class EloService extends Service<Boolean>{
         } 
         
     }
+
+    private void executeUnittestTools() {
+        switch(unittestTool) {
+            case "show":                
+                EloApp.ShowUnittests(ixConn, profile, profiles);
+                break;
+            default:
+                break;
+        }            
+    }
     
-    public void runEloCommand(EloCommand eloCommand, Profile profile, Profiles profiles) {
+    private void executeGitPullAll(String workingDir) {
+        try {
+            SubDirectories(workingDir);
+        } catch (IOException ex) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Achtung!");
+            alert.setHeaderText("IOException");
+            alert.setContentText("System.IOException message: " + ex.getMessage());
+            alert.showAndWait();                                                
+        }
+    }
+    
+    private static String GitPull (String htmlBody, String gitDir) throws IOException {
+        ProcessBuilder pb = new ProcessBuilder("git", "pull");  
+        pb.directory(new File (gitDir));
+        Process powerShellProcess = pb.start();
+        // Getting the results
+        powerShellProcess.getOutputStream().close();
+        String line;
+        
+        
+        System.out.println("Standard Output:");
+        try (BufferedReader stdout = new BufferedReader(new InputStreamReader(
+                powerShellProcess.getInputStream()))) {
+            while ((line = stdout.readLine()) != null) {
+                htmlBody += "<h4>"+ line + "</h4>";
+                System.out.println(line);
+            }
+        }
+        System.out.println("Standard Error:");
+        try (BufferedReader stderr = new BufferedReader(new InputStreamReader(
+                powerShellProcess.getErrorStream()))) {
+            while ((line = stderr.readLine()) != null) {
+                System.err.println(line);
+            }
+        }
+        System.out.println("Done");        
+        return htmlBody;
+    }
+    
+    private static void SubDirectories(String directory) throws IOException {
+        Optional<ArrayList<File>> optFiles = getPaths(new File(directory), new ArrayList<>());
+        ArrayList<File> files;
+        if (optFiles.isPresent()) {
+            files = optFiles.get();
+        } else {
+            return;
+        }
+        
+        String gitCommand;
+        gitCommand = "directory " + directory + ": " + "GitPullAll";
+        String htmlDoc = "<html>\n";
+        String htmlHead = Http.CreateHtmlHead(gitCommand);
+        String htmlStyle = Http.CreateHtmlStyle();
+        String htmlBody = "<body>\n";
+
+        htmlBody += "<h1>"+ gitCommand + "</h1>";
+
+        for (File file: files) {
+            htmlBody += "<h4>"+ file.getCanonicalPath() + "</h4>";            
+            System.out.println(file.getCanonicalPath()); 
+            htmlBody = GitPull(htmlBody, file.getCanonicalPath());                    
+        }
+
+        htmlBody += "</body>\n";
+        htmlDoc += htmlHead;
+        htmlDoc += htmlStyle;
+        htmlDoc += htmlBody;
+        htmlDoc += "</html>\n";
+
+        Http.ShowReport(htmlDoc);
+
+    }
+
+    private static Optional<ArrayList<File>> getPaths(File file, ArrayList<File> list) {
+        if (file == null || list == null || !file.isDirectory())
+            return Optional.empty();
+        File[] fileArr = file.listFiles(f ->(f.getName().endsWith(".git")) && !(f.getName().contentEquals(".git")));
+        for (File f : fileArr) {
+            if (f.isDirectory()) {
+                getPaths(f, list);
+                list.add(f);                
+            }
+        }
+        return Optional.of(list);
+    }
+    
+    public void runEloCommand(EloCommand eloCommand, Profile profile, Profiles profiles, EloTest eloTest) {
         setTypeCommand(ELOCLI);
         setEloCommand(eloCommand);
         setProfile(profile);
         setProfiles(profiles);
+        setEloTest(eloTest);
         if (isRunning()) {
             System.out.println("Already running. Nothing to do.");
         } else {
@@ -130,20 +244,52 @@ class EloService extends Service<Boolean>{
         }           
     }
     
+    public void runUnittestTools(String unittestTool, Profile profile, Profiles profiles, EloTest eloTest) {
+        IXConnection ixConn;
+        try {
+            ixConn = Connection.getIxConnection(profile, profiles);            
+            setTypeCommand(UNITTESTTOOLS);
+            setUnittestTool(unittestTool);
+            setProfile(profile);
+            setProfiles(profiles);        
+            setEloTest(eloTest);
+            setIxConn(ixConn);            
+            if (isRunning()) {
+                System.out.println("Already running. Nothing to do.");
+            } else {
+                reset();
+                start();
+            }           
+        }catch (Exception ex) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Achtung!");
+            alert.setHeaderText("Exception");
+            alert.setContentText("System.Exception message: " + ex.getMessage());
+            alert.showAndWait();                                                                        
+        } 
+    }
 
     @Override
     protected Task<Boolean> createTask() {
         return new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
+                eloTest.setDisableControls(true);
                 switch(typeCommand) {
                     case ELOCLI:
-                    // TODO ExecuteEloCommand
+                        if (eloCommand.getName().equals("eloPrepare")) {
+                            executeGitPullAll(profiles.getDevDir());
+                            executeGitPullAll(profiles.getGitSolutionsDir());
+                        }                        
                         executeEloCli();                        
+                        break;
+                    case UNITTESTTOOLS:
+                        executeUnittestTools();
                         break;
                     default:
                         break;
                 }
+                eloTest.setDisableControls(false);
                 return true;
             }
         };
