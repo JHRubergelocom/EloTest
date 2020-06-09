@@ -14,7 +14,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
-import javafx.scene.control.Alert;
 
 /**
  *
@@ -31,19 +30,11 @@ class Http {
                 try {
                     desktop.browse(uri);
                 } catch (IOException ex) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Achtung!");
-                    alert.setHeaderText("IOException");
-                    alert.setContentText("System.IOException message: " + ex.getMessage());
-                    alert.showAndWait();                                
+                    EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage()); 
                 }
             }            
         } catch (URISyntaxException ex) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achtung!");
-            alert.setHeaderText("URISyntaxException");
-            alert.setContentText("System.URISyntaxException message: " + ex.getMessage());
-            alert.showAndWait();                        
+            EloTest.showAlert("Achtung!", "URISyntaxException", "System.URISyntaxException message: " + ex.getMessage()); 
         } 
       }         
     }
@@ -240,22 +231,13 @@ class Http {
                 bw.write(htmlDoc);
             }                        
         } catch (IOException ex) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achtung!");
-            alert.setHeaderText("IOException");
-            alert.setContentText("System.IOException message: " + ex.getMessage());
-            alert.showAndWait();                        
+            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage()); 
         }
         try {
             URL url = uri.toURL();
             Http.OpenUrl(url.toString());            
         } catch (MalformedURLException ex) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achtung!");
-            alert.setHeaderText("MalformedURLException");
-            alert.setContentText("System.MalformedURLException message: " + ex.getMessage());
-            alert.showAndWait();                        
+            EloTest.showAlert("Achtung!", "MalformedURLException", "System.MalformedURLException message: " + ex.getMessage()); 
         }
-    }
-    
+    }    
 }

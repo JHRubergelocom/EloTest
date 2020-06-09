@@ -12,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
@@ -75,11 +76,7 @@ public class EloTest extends Application {
         listvProfile.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 String currentItemSelected = listvProfile.getSelectionModel().getSelectedItem();
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Achtung!");
-                alert.setHeaderText("Doppelclick");
-                alert.setContentText(currentItemSelected);
-                alert.showAndWait();
+                EloTest.ShowAlert("Achtung!", "Doppelclick", currentItemSelected);
             }
         });      
 */        
@@ -116,11 +113,7 @@ public class EloTest extends Application {
             if (event.getClickCount() == 2) {
                 String currentItemSelected = listvEloCli.getSelectionModel().getSelectedItem();
                 /*
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Achtung!");
-                alert.setHeaderText("Doppelclick");
-                alert.setContentText(currentItemSelected);
-                alert.showAndWait();
+                EloTest.ShowAlert("Achtung!", "Doppelclick", currentItemSelected);
                 */
                 String pname = listvProfile.getSelectionModel().getSelectedItem();
                 Profile profile = profiles.getProfiles().get(pname);
@@ -161,11 +154,7 @@ public class EloTest extends Application {
                 String currentItemSelected = listvUnittestTools.getSelectionModel().getSelectedItem();
                 
                 /*
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Achtung!");
-                alert.setHeaderText("Doppelclick");
-                alert.setContentText(currentItemSelected);
-                alert.showAndWait();
+                EloTest.ShowAlert("Achtung!", "Doppelclick", currentItemSelected);
                 */ 
                 String pname = listvProfile.getSelectionModel().getSelectedItem();
                 Profile profile = profiles.getProfiles().get(pname);
@@ -179,9 +168,46 @@ public class EloTest extends Application {
         });   
         
     }
-
-
     
+    private void fillListViewEloServices() {
+        final ArrayList<String> entries = new ArrayList<>();
+        entries.add("Application Server");
+        entries.add("Admin Console");
+        entries.add("App Manager");
+        entries.add("Webclient");
+        fillListView(lblEloServices, "Elo Services", listvEloServices, entries);
+    }
+
+    private void initListViewEloServices() {
+        fillListViewEloServices();        
+        String selectedEloServicesName = eloProperties.getSelectedEloServices();
+        if (selectedEloServicesName != null) {
+            listvEloServices.getSelectionModel().select(selectedEloServicesName);            
+        } else {
+            listvEloServices.getSelectionModel().select(0);                    
+        }
+        
+        listvEloServices.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getClickCount() == 2) {
+                String currentItemSelected = listvEloServices.getSelectionModel().getSelectedItem();
+                
+                /*
+                EloTest.ShowAlert("Achtung!", "Doppelclick", currentItemSelected);
+                */ 
+                String pname = listvProfile.getSelectionModel().getSelectedItem();
+                Profile profile = profiles.getProfiles().get(pname);
+                eloService.runEloServices(currentItemSelected, profile, profiles, this);
+            }
+        });      
+        
+        listvEloServices.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            System.out.println("Selected item: " + newValue);
+            eloProperties.setSelectedEloServices(newValue);
+        });           
+        
+    }
+
+
     
     public void setDisableControls(boolean value) {
         lblProfile.setDisable(value);
@@ -192,6 +218,14 @@ public class EloTest extends Application {
         listvUnittestTools.setDisable(value);
         lblEloServices.setDisable(value);  
         listvEloServices.setDisable(value);
+    }
+    
+    public static void showAlert(String title, String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();                     
     }
 
     
@@ -214,13 +248,8 @@ public class EloTest extends Application {
         initListViewEloCli();
         
         initListViewUnittestTools();
-        
-        final ArrayList<String> entries = new ArrayList<>();
-        entries.add("Application Server");
-        entries.add("Admin Console");
-        entries.add("App Manager");
-        entries.add("Webclient");
-        fillListView(lblEloServices, "Elo Services", listvEloServices, entries);
+
+        initListViewEloServices();
         
         root.add(lblProfile, 0, 0);
         root.add(listvProfile, 0, 1);

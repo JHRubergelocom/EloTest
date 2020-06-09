@@ -1,5 +1,6 @@
 #EloProperties
-#Thu Jun 04 14:20:45 CEST 2020
-SelectedProfile=visitor
+#Tue Jun 09 16:25:15 CEST 2020
+SelectedEloServices=App Manager
+SelectedProfile=productivity
 SelectedEloCli=eloPrepare
-SelectedUnittestTools=show
+SelectedUnittestTools=matching

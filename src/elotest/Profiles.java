@@ -12,7 +12,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javafx.scene.control.Alert;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,27 +51,15 @@ class Profiles {
                 jsonString = jsonString.concat(line);
             }            
         } catch (FileNotFoundException ex) {    
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achtung!");
-            alert.setHeaderText("FileNotFoundException");
-            alert.setContentText("System.FileNotFoundException message: " + ex.getMessage());
-            alert.showAndWait();
+            EloTest.showAlert("Achtung!", "FileNotFoundException", "System.FileNotFoundException message: " + ex.getMessage());
         } catch (IOException ex) {            
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achtung!");
-            alert.setHeaderText("IOException");
-            alert.setContentText("System.IOException message: " + ex.getMessage());
-            alert.showAndWait();            
+            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
         } finally {
             if (in != null) {
                 try {
                     in.close();
                 } catch (IOException ex) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Achtung!");
-                    alert.setHeaderText("IOException");
-                    alert.setContentText("System.IOException message: " + ex.getMessage());
-                    alert.showAndWait();            
+                    EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
                 }
             }
         }

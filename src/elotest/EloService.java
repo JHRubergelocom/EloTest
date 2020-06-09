@@ -17,9 +17,9 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.scene.control.Alert;
 
 /**
  *
@@ -36,6 +36,7 @@ class EloService extends Service<Boolean>{
     private Profiles profiles;
     private EloTest eloTest;
     private String unittestTool;
+    private String eloService;    
     private IXConnection ixConn;
     
     private void setTypeCommand(String typeCommand) {
@@ -61,6 +62,12 @@ class EloService extends Service<Boolean>{
     private void setUnittestTool(String unittestTool) {
         this.unittestTool = unittestTool;        
     }
+    
+    private void setEloService(String eloService) {
+        this.eloService = eloService;
+    }
+
+
 
     private void setIxConn(IXConnection ixConn) {
         this.ixConn = ixConn;        
@@ -124,13 +131,8 @@ class EloService extends Service<Boolean>{
             System.out.println("Programmende"); 
 
         } catch (IOException ex) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achtung!");
-            alert.setHeaderText("IOException");
-            alert.setContentText("System.IOException message: " + ex.getMessage());
-            alert.showAndWait();                                    
-        } 
-        
+            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+        }         
     }
 
     private void executeUnittestTools() {
@@ -139,19 +141,30 @@ class EloService extends Service<Boolean>{
                 EloApp.ShowUnittests(ixConn, profile, profiles);
                 break;
             default:
+                Platform.runLater(() -> {
+                    EloTest.showAlert("Not supported", "unittestTool", unittestTool);
+                });
                 break;
         }            
     }
+
+    private void executeEloServices() {
+        switch(eloService) {
+            default:
+                Platform.runLater(() -> {
+                    EloTest.showAlert("Not supported", "eloService", eloService);
+                });
+                break;
+        }            
+    }
+
+
     
     private void executeGitPullAll(String workingDir) {
         try {
             SubDirectories(workingDir);
         } catch (IOException ex) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achtung!");
-            alert.setHeaderText("IOException");
-            alert.setContentText("System.IOException message: " + ex.getMessage());
-            alert.showAndWait();                                                
+            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
         }
     }
     
@@ -236,16 +249,30 @@ class EloService extends Service<Boolean>{
         setProfile(profile);
         setProfiles(profiles);
         setEloTest(eloTest);
-        if (isRunning()) {
-            System.out.println("Already running. Nothing to do.");
+
+        if (!eloCommand.getName().equals("eloPrepare")) {
+            try {
+                ixConn = Connection.getIxConnection(profile, profiles);  
+                if (isRunning()) {
+                    System.out.println("Already running. Nothing to do.");
+                } else {
+                    reset();
+                    start();
+                }                           
+            } catch (Exception ex) {
+                EloTest.showAlert("Achtung!", "Exception", "System.Exception message: " + ex.getMessage());
+            }
         } else {
-            reset();
-            start();
-        }           
+            if (isRunning()) {
+                System.out.println("Already running. Nothing to do.");
+            } else {
+                reset();
+                start();
+            }                       
+        }
     }
     
     public void runUnittestTools(String unittestTool, Profile profile, Profiles profiles, EloTest eloTest) {
-        IXConnection ixConn;
         try {
             ixConn = Connection.getIxConnection(profile, profiles);            
             setTypeCommand(UNITTESTTOOLS);
@@ -260,14 +287,33 @@ class EloService extends Service<Boolean>{
                 reset();
                 start();
             }           
-        }catch (Exception ex) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achtung!");
-            alert.setHeaderText("Exception");
-            alert.setContentText("System.Exception message: " + ex.getMessage());
-            alert.showAndWait();                                                                        
+        } catch (Exception ex) {
+            EloTest.showAlert("Achtung!", "Exception", "System.Exception message: " + ex.getMessage());
         } 
     }
+    
+    void runEloServices(String eloService, Profile profile, Profiles profiles, EloTest eloTest) {
+        try {
+            ixConn = Connection.getIxConnection(profile, profiles);            
+            setTypeCommand(ELOSERVICES);
+            setEloService(eloService);
+            setProfile(profile);
+            setProfiles(profiles);        
+            setEloTest(eloTest);
+            setIxConn(ixConn);            
+            if (isRunning()) {
+                System.out.println("Already running. Nothing to do.");
+            } else {
+                reset();
+                start();
+            }           
+        } catch (Exception ex) {
+            EloTest.showAlert("Achtung!", "Exception", "System.Exception message: " + ex.getMessage());
+        } 
+        
+    }
+
+    
 
     @Override
     protected Task<Boolean> createTask() {
@@ -286,6 +332,9 @@ class EloService extends Service<Boolean>{
                     case UNITTESTTOOLS:
                         executeUnittestTools();
                         break;
+                    case ELOSERVICES:
+                        executeEloServices();
+                        break;                        
                     default:
                         break;
                 }

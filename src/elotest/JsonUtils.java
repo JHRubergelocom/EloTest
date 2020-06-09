@@ -7,7 +7,6 @@ package elotest;
 
 import com.google.gson.Gson;
 import de.elo.ix.client.DocMask;
-import javafx.scene.control.Alert;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,11 +50,7 @@ class JsonUtils {
             JSONObject obj = new JSONObject (jsonText);
             return obj.toString(2);
         } catch (JSONException ex){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achtung!");
-            alert.setHeaderText("IOException");
-            alert.setContentText("System.IOException message: " + ex.getMessage());
-            alert.showAndWait();            
+            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
         }
         return jsonText;
     }

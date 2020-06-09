@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Properties;
-import javafx.scene.control.Alert;
 
 /**
  *
@@ -31,27 +30,15 @@ class EloProperties  extends Properties {
             reader = new FileReader(propertiesFile);
             super.load(reader);      
         } catch (FileNotFoundException ex) {            
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achtung!");
-            alert.setHeaderText("FileNotFoundException");
-            alert.setContentText("System.FileNotFoundException message: " + ex.getMessage());
-            alert.showAndWait();            
+            EloTest.showAlert("Achtung!", "FileNotFoundException", "System.FileNotFoundException message: " + ex.getMessage());
         } catch (IOException ex) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achtung!");
-            alert.setHeaderText("IOException");
-            alert.setContentText("System.IOException message: " + ex.getMessage());
-            alert.showAndWait();            
+            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());            
         } finally {
             if (reader != null) {
                 try {            
                     reader.close();
                 } catch (IOException ex) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Achtung!");
-                    alert.setHeaderText("IOException");
-                    alert.setContentText("System.IOException message: " + ex.getMessage());
-                    alert.showAndWait();                                
+                    EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());            
                 }                
             }
         }
@@ -63,22 +50,13 @@ class EloProperties  extends Properties {
             writer = new FileWriter(propertiesFile);
             store(writer, "EloProperties");
         } catch (IOException ex) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achtung!");
-            alert.setHeaderText("IOException");
-            alert.setContentText("System.IOException message: " + ex.getMessage());
-            alert.showAndWait();                                
-            
+            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
         } finally {
             if (writer != null) {
                 try {            
                     writer.close();
                 } catch (IOException ex) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Achtung!");
-                    alert.setHeaderText("IOException");
-                    alert.setContentText("System.IOException message: " + ex.getMessage());
-                    alert.showAndWait();                                                    
+                    EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
                 }                
             }
         }           
@@ -109,7 +87,17 @@ class EloProperties  extends Properties {
     void setSelectedUnittestTools(String name) {
         setProperty("SelectedUnittestTools", name);   
         saveProperties();        
-    }    
+    }   
+    
+    String getSelectedEloServices() {
+        return getProperty("SelectedEloServices"); 
+    }
+
+    void setSelectedEloServices(String name) {
+        setProperty("SelectedEloServices", name);   
+        saveProperties();        
+    }
+    
     
     void setPattern(String pattern) {
         setProperty("Pattern", pattern);   
