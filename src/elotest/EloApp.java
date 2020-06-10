@@ -9,6 +9,7 @@ import de.elo.ix.client.IXConnection;
 import de.elo.ix.client.Sord;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.application.Platform;
 import org.json.JSONObject;
 
 /**
@@ -61,5 +62,62 @@ class EloApp {
         appUrl = appUrl + "&timezone=Europe%2FBerlin";
         Http.OpenUrl(appUrl);                                  
     }    
+
+    static void ShowRancher(Profiles profiles) {
+        try {
+            String rancherUrl = "http://rancher.elo.local/env/1a81/apps/stacks?tags=" + profiles.getGitUser() + "&which=all";
+            Http.OpenUrl(rancherUrl);                    
+        } catch (Exception ex) {
+            Platform.runLater(() -> {
+                EloTest.showAlert("Achtung!", "Exception", "System.Exception message: " + ex.getMessage());
+            });                        
+        }        
+    }
+
+    static void ShowEloApplicationServer(IXConnection ixConn) {
+        String ticket = ixConn.getLoginResult().getClientInfo().getTicket();
+        String ixUrl = ixConn.getEndpointUrl();
+        String[] eloApplicationServer = ixUrl.split("/");
+        String eloApplicationServerUrl = eloApplicationServer[0] + "//" + eloApplicationServer[2] + "/manager/html";
+        eloApplicationServerUrl = eloApplicationServerUrl + "/?lang=de";
+        eloApplicationServerUrl = eloApplicationServerUrl + "&ticket=" + ticket;
+        eloApplicationServerUrl = eloApplicationServerUrl + "&timezone=Europe%2FBerlin";
+        Http.OpenUrl(eloApplicationServerUrl);                    
+    }
+
+    static void StartAdminConsole(IXConnection ixConn) {
+        String ticket = ixConn.getLoginResult().getClientInfo().getTicket();
+        String ixUrl = ixConn.getEndpointUrl();
+        String[] adminConsole = ixUrl.split("/");
+        String adminConsoleUrl = adminConsole[0] + "//" + adminConsole[2] + "/AdminConsole";
+        adminConsoleUrl = adminConsoleUrl + "/?lang=de";
+        adminConsoleUrl = adminConsoleUrl + "&ticket=" + ticket;
+        adminConsoleUrl = adminConsoleUrl + "&timezone=Europe%2FBerlin";
+        Http.OpenUrl(adminConsoleUrl);                    
+    }
+
+    static void StartAppManager(IXConnection ixConn) {
+        String ticket = ixConn.getLoginResult().getClientInfo().getTicket();
+        String ixUrl = ixConn.getEndpointUrl();
+        String appManagerUrl = ixUrl.replace("ix-", "wf-");
+        appManagerUrl = appManagerUrl.replace("/ix", "/apps/app");
+        appManagerUrl = appManagerUrl + "/elo.webapps.AppManager";
+        appManagerUrl = appManagerUrl + "/?lang=de";
+        appManagerUrl = appManagerUrl + "&ticket=" + ticket;
+        appManagerUrl = appManagerUrl + "&timezone=Europe%2FBerlin";
+        Http.OpenUrl(appManagerUrl);
+    }
+    
+    static void StartWebclient(IXConnection ixConn) {
+        String ticket = ixConn.getLoginResult().getClientInfo().getTicket();
+        String ixUrl = ixConn.getEndpointUrl();
+        String webclientUrl = ixUrl.replace("ix-", "web-");
+        webclientUrl = webclientUrl.replace("/ix", "");
+        webclientUrl = webclientUrl + "/?lang=de";
+        webclientUrl = webclientUrl + "&ticket=" + ticket;
+        webclientUrl = webclientUrl + "&timezone=Europe%2FBerlin";
+        Http.OpenUrl(webclientUrl);
+    }
+    
 
 }

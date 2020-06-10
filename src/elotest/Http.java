@@ -14,6 +14,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
+import javafx.application.Platform;
 
 /**
  *
@@ -30,11 +31,15 @@ class Http {
                 try {
                     desktop.browse(uri);
                 } catch (IOException ex) {
-                    EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage()); 
+                    Platform.runLater(() -> {
+                        EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+                    });                                
                 }
             }            
         } catch (URISyntaxException ex) {
-            EloTest.showAlert("Achtung!", "URISyntaxException", "System.URISyntaxException message: " + ex.getMessage()); 
+            Platform.runLater(() -> {
+                EloTest.showAlert("Achtung!", "URISyntaxException", "System.URISyntaxException message: " + ex.getMessage());
+            });                        
         } 
       }         
     }
@@ -231,13 +236,17 @@ class Http {
                 bw.write(htmlDoc);
             }                        
         } catch (IOException ex) {
-            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage()); 
+            Platform.runLater(() -> {
+                EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+            });            
         }
         try {
             URL url = uri.toURL();
             Http.OpenUrl(url.toString());            
         } catch (MalformedURLException ex) {
-            EloTest.showAlert("Achtung!", "MalformedURLException", "System.MalformedURLException message: " + ex.getMessage()); 
+            Platform.runLater(() -> {
+                EloTest.showAlert("Achtung!", "MalformedURLException", "System.MalformedURLException message: " + ex.getMessage());
+            });                        
         }
     }    
 }

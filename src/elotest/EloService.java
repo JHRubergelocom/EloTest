@@ -131,7 +131,9 @@ class EloService extends Service<Boolean>{
             System.out.println("Programmende"); 
 
         } catch (IOException ex) {
-            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+            Platform.runLater(() -> {
+                EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+            });                        
         }         
     }
 
@@ -146,6 +148,13 @@ class EloService extends Service<Boolean>{
             case "create":
                 UnittestUtils.CreateUnittest(ixConn, profile);                
                 break;
+            case "ranger":
+                EloApp.ShowRancher(profiles);                
+                break;
+            case "gitpullall":
+                executeGitPullAll(profiles.getDevDir());
+                executeGitPullAll(profiles.getGitSolutionsDir());                
+                break;            
             default:
                 Platform.runLater(() -> {
                     EloTest.showAlert("Not supported", "unittestTool", unittestTool);
@@ -156,6 +165,18 @@ class EloService extends Service<Boolean>{
 
     private void executeEloServices() {
         switch(eloService) {
+            case "Application Server":
+                EloApp.ShowEloApplicationServer(ixConn);
+                break;
+            case "Admin Console":
+                EloApp.StartAdminConsole(ixConn);
+                break;
+            case "App Manager":
+                EloApp.StartAppManager(ixConn);
+                break;
+            case "Webclient":
+                EloApp.StartWebclient(ixConn);
+                break;
             default:
                 Platform.runLater(() -> {
                     EloTest.showAlert("Not supported", "eloService", eloService);
@@ -170,7 +191,9 @@ class EloService extends Service<Boolean>{
         try {
             SubDirectories(workingDir);
         } catch (IOException ex) {
-            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+            Platform.runLater(() -> {
+                EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+            });            
         }
     }
     

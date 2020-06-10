@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
+import javafx.application.Platform;
 
 /**
  *
@@ -103,15 +104,21 @@ class RepoUtils {
                         docText = docText.concat(line);
                     }                       
                 } catch (FileNotFoundException ex) {    
-                    EloTest.showAlert("Achtung!", "FileNotFoundException", "System.FileNotFoundException message: " + ex.getMessage());
+                    Platform.runLater(() -> {
+                        EloTest.showAlert("Achtung!", "FileNotFoundException", "System.FileNotFoundException message: " + ex.getMessage());
+                    });                                
                 } catch (IOException ex) {            
-                    EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+                    Platform.runLater(() -> {
+                        EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+                    });                                                                                
                 } finally {
                     if (in != null) {
                         try {
                             in.close();
                         } catch (IOException ex) {
-                            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+                            Platform.runLater(() -> {
+                                EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+                            });                                                            
                         }
                     }
                 }
@@ -146,15 +153,21 @@ class RepoUtils {
                         docList.add(line);
                     }                       
                 } catch (FileNotFoundException ex) {    
-                    EloTest.showAlert("Achtung!", "FileNotFoundException", "System.FileNotFoundException message: " + ex.getMessage());
+                    Platform.runLater(() -> {
+                        EloTest.showAlert("Achtung!", "FileNotFoundException", "System.FileNotFoundException message: " + ex.getMessage());
+                    });                                
                 } catch (IOException ex) {            
-                    EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+                    Platform.runLater(() -> {
+                        EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+                    });                                
                 } finally {
                     if (in != null) {
                         try {
                             in.close();
                         } catch (IOException ex) {
-                            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+                            Platform.runLater(() -> {
+                                EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+                            });            
                         }
                     }
                 }
@@ -213,15 +226,22 @@ class RepoUtils {
                         linenr++;                        
                     }                       
                 } catch (FileNotFoundException ex) {    
-                    EloTest.showAlert("Achtung!", "FileNotFoundException", "System.FileNotFoundException message: " + ex.getMessage());
+                    Platform.runLater(() -> {
+                        EloTest.showAlert("Achtung!", "FileNotFoundException", "System.FileNotFoundException message: " + ex.getMessage());
+                    });            
+                    
                 } catch (IOException ex) {            
-                    EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage()); 
+                    Platform.runLater(() -> {
+                        EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+                    });                                
                 } finally {
                     if (in != null) {
                         try {
                             in.close();
                         } catch (IOException ex) {                            
-                            EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage()); 
+                            Platform.runLater(() -> {
+                                EloTest.showAlert("Achtung!", "IOException", "System.IOException message: " + ex.getMessage());
+                            });                                        
                         }
                     }
                 }

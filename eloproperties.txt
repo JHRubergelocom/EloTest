@@ -1,6 +1,6 @@
 #EloProperties
-#Wed Jun 10 13:49:27 CEST 2020
-SelectedEloServices=App Manager
+#Wed Jun 10 15:17:03 CEST 2020
+SelectedEloServices=Webclient
 SelectedProfile=visitor
 SelectedEloCli=eloPrepare
-SelectedUnittestTools=create
+SelectedUnittestTools=gitpullall
