@@ -140,6 +140,9 @@ class EloService extends Service<Boolean>{
             case "show":                
                 EloApp.ShowUnittests(ixConn, profile, profiles);
                 break;
+            case "matching":
+                UnittestUtils.ShowReportMatchUnittest(ixConn, profile);
+                break;
             default:
                 Platform.runLater(() -> {
                     EloTest.showAlert("Not supported", "unittestTool", unittestTool);

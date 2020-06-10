@@ -44,8 +44,6 @@ public class EloTest extends Application {
     private final Label lblEloServices = new Label(); 
     private final ListView<String> listvEloServices = new ListView<>(); 
     
-    
-    
     private void fillListView(Label label, String lblText, ListView<String> listview, List <String> entries) {
         label.setText(lblText);
         label.setStyle(LABEL_STYLE);
