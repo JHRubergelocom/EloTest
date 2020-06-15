@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
@@ -154,7 +155,13 @@ class EloService extends Service<Boolean>{
             case "gitpullall":
                 executeGitPullAll(profiles.getDevDir());
                 executeGitPullAll(profiles.getGitSolutionsDir());                
-                break;            
+                break; 
+            case "search":
+                try {
+                    SearchUtils.ShowSearchResult(ixConn, profile, eloTest);
+                } catch (UnsupportedEncodingException ex) {
+                }
+                break;
             default:
                 Platform.runLater(() -> {
                     EloTest.showAlert("Not supported", "unittestTool", unittestTool);

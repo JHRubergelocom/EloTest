@@ -286,5 +286,5 @@ class RepoUtils {
         return dicSordDocLines;        
         
     }
-    
+
 }

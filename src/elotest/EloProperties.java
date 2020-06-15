@@ -112,7 +112,11 @@ class EloProperties  extends Properties {
         saveProperties();
     }
     boolean getCaseSensitiv() {
-        String value = getProperty("CaseSensitiv").toLowerCase();
+        String value = getProperty("CaseSensitiv");
+        if (value == null) {
+            value = "false";
+        }
+        value = value.toLowerCase();
         return value.toLowerCase().equals("true");
     }
 

@@ -13,11 +13,14 @@ import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 /**
@@ -43,6 +46,10 @@ public class EloTest extends Application {
     
     private final Label lblEloServices = new Label(); 
     private final ListView<String> listvEloServices = new ListView<>(); 
+    
+    private final TextField txtPattern = new TextField();
+    private final CheckBox chkCaseSensitiv = new CheckBox("Case sensitiv");
+
     
     private void fillListView(Label label, String lblText, ListView<String> listview, List <String> entries) {
         label.setText(lblText);
@@ -135,6 +142,7 @@ public class EloTest extends Application {
         entries.add("create");
         entries.add("ranger");
         entries.add("gitpullall");
+        entries.add("search");
         fillListView(lblUnittestTools, "Unittest Tools", listvUnittestTools, entries);
     }
 
@@ -205,7 +213,19 @@ public class EloTest extends Application {
         
     }
 
-
+    private void initSearchPattern() {
+        txtPattern.setText(eloProperties.getPattern());
+        txtPattern.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            System.out.println(" Text Changed to  " + newValue + "\n");
+            eloProperties.setPattern(newValue);
+        });
+        
+        chkCaseSensitiv.setSelected(eloProperties.getCaseSensitiv());  
+        chkCaseSensitiv.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            System.out.println(" CheckBox Changed to  " + newValue + "\n");
+            eloProperties.setCaseSensitiv(newValue);
+        });
+    }
     
     public void setDisableControls(boolean value) {
         lblProfile.setDisable(value);
@@ -216,6 +236,8 @@ public class EloTest extends Application {
         listvUnittestTools.setDisable(value);
         lblEloServices.setDisable(value);  
         listvEloServices.setDisable(value);
+        txtPattern.setDisable(value);        
+        chkCaseSensitiv.setDisable(value); 
     }
     
     public static void showAlert(String title, String headerText, String contentText) {
@@ -225,7 +247,14 @@ public class EloTest extends Application {
         alert.setContentText(contentText);
         alert.showAndWait();                     
     }
-
+    
+    public TextField getTxtPattern() {
+        return txtPattern;
+    }
+    
+    public CheckBox getChkCaseSensitiv() {
+        return chkCaseSensitiv;
+    }
     
     @Override
     public void start(Stage primaryStage) {     
@@ -236,6 +265,9 @@ public class EloTest extends Application {
             ColumnConstraints column = new ColumnConstraints(150);
             root.getColumnConstraints().add(column);
         }
+        
+        root.getRowConstraints().add(new RowConstraints(20));
+        root.getRowConstraints().add(new RowConstraints(320));
 
         root.setPadding(new Insets(10, 10, 10, 10));
         root.setHgap(7);
@@ -249,6 +281,8 @@ public class EloTest extends Application {
 
         initListViewEloServices();
         
+        initSearchPattern();
+        
         root.add(lblProfile, 0, 0);
         root.add(listvProfile, 0, 1);
 
@@ -258,10 +292,21 @@ public class EloTest extends Application {
         root.add(lblUnittestTools, 2, 0);
         root.add(listvUnittestTools, 2, 1);
         
-        root.add(lblEloServices, 0, 2);
-        root.add(listvEloServices, 0, 3);
+        root.add(lblEloServices, 3, 0);
+        root.add(listvEloServices, 3, 1);
+        
+        
+        GridPane gpSearch = new GridPane();
+        gpSearch.setPadding(new Insets(0, 0, 0, 0));
+        gpSearch.setHgap(7);
+        gpSearch.setVgap(7);
+        
+        gpSearch.add(txtPattern, 0, 0);
+        gpSearch.add(chkCaseSensitiv, 1, 0);
+        
+        root.add(gpSearch, 0, 2, 2, 1);
 
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 640, 400);
         
         primaryStage.setTitle("ELO Test");
         primaryStage.setScene(scene);

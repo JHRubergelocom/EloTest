@@ -1,6 +1,8 @@
 #EloProperties
-#Mon Jun 15 09:46:25 CEST 2020
+#Mon Jun 15 15:35:31 CEST 2020
+CaseSensitiv=true
 SelectedEloServices=Webclient
-SelectedProfile=learning
+Pattern=RF_
+SelectedProfile=knowledge
 SelectedEloCli=eloPrepare
-SelectedUnittestTools=gitpullall
+SelectedUnittestTools=search
