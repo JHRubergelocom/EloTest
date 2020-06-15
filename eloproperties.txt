@@ -1,6 +1,6 @@
 #EloProperties
-#Wed Jun 10 15:17:03 CEST 2020
+#Mon Jun 15 09:46:25 CEST 2020
 SelectedEloServices=Webclient
-SelectedProfile=visitor
+SelectedProfile=learning
 SelectedEloCli=eloPrepare
 SelectedUnittestTools=gitpullall

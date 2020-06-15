@@ -10,8 +10,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +22,7 @@ import org.json.JSONObject;
  * @author ruberg
  */
 class Profiles {
-    private Map<String, Profile> profiles;
+    private SortedMap<String, Profile> profiles;
     private String gitSolutionsDir;
     private String gitDevDir;
     private String gitUser;
@@ -30,7 +31,7 @@ class Profiles {
     private String pwd;    
     
     Profiles(String jsonFile) {
-        profiles = new HashMap<>();
+        profiles = new TreeMap<>();
         gitSolutionsDir = "";
         gitDevDir = "";
         gitUser = "";
@@ -97,7 +98,7 @@ class Profiles {
     }
 
     Profiles() {
-        profiles = new HashMap<>();
+        profiles = new TreeMap<>();
         gitSolutionsDir = "";
         gitDevDir = "";
         gitUser = "";
