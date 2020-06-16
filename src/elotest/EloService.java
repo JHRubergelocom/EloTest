@@ -162,6 +162,9 @@ class EloService extends Service<Boolean>{
                 } catch (UnsupportedEncodingException ex) {
                 }
                 break;
+            case "export":
+                EloExport.StartExport(ixConn, profile, profiles);
+                break;
             default:
                 Platform.runLater(() -> {
                     EloTest.showAlert("Not supported", "unittestTool", unittestTool);

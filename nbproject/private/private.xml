@@ -4,7 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Ruberg/Documents/NetBeansProjects/EloTest/src/elotest/EloService.java</file>
-            <file>file:/C:/Users/Ruberg/Documents/NetBeansProjects/EloTest/src/elotest/SearchUtils.java</file>
+            <file>file:/C:/Users/Ruberg/Documents/NetBeansProjects/EloTest/src/elotest/FileUtils.java</file>
+            <file>file:/C:/Users/Ruberg/Documents/NetBeansProjects/EloTest/src/elotest/MaskUtils.java</file>
+            <file>file:/C:/Users/Ruberg/Documents/NetBeansProjects/EloTest/src/elotest/WfUtils.java</file>
+            <file>file:/C:/Users/Ruberg/Documents/NetBeansProjects/EloTest/src/elotest/RepoUtils.java</file>
+            <file>file:/C:/Users/Ruberg/Documents/NetBeansProjects/EloTest/src/elotest/EloTest.java</file>
+            <file>file:/C:/Users/Ruberg/Documents/NetBeansProjects/EloTest/src/elotest/Profiles.java</file>
+            <file>file:/C:/Users/Ruberg/Documents/NetBeansProjects/EloTest/src/elotest/Profile.java</file>
+            <file>file:/C:/Users/Ruberg/Documents/NetBeansProjects/EloTest/src/elotest/UnittestUtils.java</file>
+            <file>file:/C:/Users/Ruberg/Documents/NetBeansProjects/EloTest/src/elotest/EloExport.java</file>
         </group>
     </open-files>
 </project-private>

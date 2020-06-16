@@ -19,6 +19,7 @@ import de.elo.ix.client.LockC;
 import de.elo.ix.client.MaskName;
 import de.elo.ix.client.UserInfoC;
 import de.elo.ix.client.UserName;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -58,6 +59,34 @@ class MaskUtils {
           aclItem.setId(-1);
         }                
     } 
+    
+    static void FindDocMasks(IXConnection ixConn, File exportPath) {
+        String arcPath = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions";
+        try {
+            EditInfo ed = ixConn.ix().checkoutSord(arcPath, EditInfoC.mbAll, LockC.NO);
+            List<DocMask> dmList = new ArrayList<>();
+            for (MaskName mn : ed.getMaskNames()) { 
+                boolean canRead = (mn.getAccess() & AccessC.LUR_READ) != 0; 
+                System.out.println("id=" + Integer.toString(mn.getId()) +
+                    ", name=" + mn.getName() + 
+                    ", folderMask=" + Boolean.toString(mn.isFolderMask()) + 
+                    ", documentMask=" + Boolean.toString(mn.isDocumentMask()) + 
+                    ", searchMask=" + Boolean.toString(mn.isSearchMask()) + 
+                    ", canRead=" + Boolean.toString(canRead)); 
+
+                DocMask dm = ixConn.ix().checkoutDocMask(mn.getName(), DocMaskC.mbAll, LockC.NO);
+                dmList.add(dm);            
+            }
+            DocMask[] docMasks = new DocMask[dmList.size()];
+            docMasks = dmList.toArray(docMasks);   
+            
+            for (DocMask dm : docMasks) {
+                ExportDocMask(ixConn, exportPath, dm);                
+            }
+        } catch (RemoteException ex) {
+        }        
+    }
+
         
     private static String getUserName(IXConnection ixConn, int id) throws RemoteException {
         String[] ids = new String[]{id + ""};
@@ -109,6 +138,31 @@ class MaskUtils {
         return json;        
     }
     
+    private static void ExportDocMask(IXConnection ixConn, File exportPath, DocMask dm) {
+        try {
+            dm.setAcl("");
+            dm.setDAcl("");
+            clearIds(dm.getAclItems());
+            clearIds(dm.getDocAclItems());
+            for (DocMaskLine line: dm.getLines()) {
+              line.setAcl("");
+              clearIds(line.getAclItems());
+            }
+            String json = JsonUtils.getJsonString(dm);
+            dm = JsonUtils.getDocMask(json);
+            adjustMask(ixConn, dm);
+            json = JsonUtils.formatJsonString(json);     
+            
+            String dirName = exportPath + "\\DocMasks";
+            String fileName = dm.getName();
+            FileUtils.SaveToFile(dirName, fileName, json, "json");
+            System.out.println("Save DocMask: '" + dm.getName() + "'");                        
+            
+        } catch (RemoteException ex) {
+            System.out.println("RemoteException: " + ex.getMessage());
+        }
+    }
+
     static SortedMap<DocMask, SortedMap<Integer, String>> LoadDocMaskLines(IXConnection ixConn, Pattern pattern) throws RemoteException {
         Comparator<DocMask> byName = Comparator.comparing(dm -> dm.getName());
         Comparator<DocMask> byId = Comparator.comparingInt(dm -> dm.getId());

@@ -19,6 +19,7 @@ import de.elo.ix.client.Sord;
 import de.elo.ix.client.SordC;
 import de.elo.ix.client.SordZ;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -85,6 +86,90 @@ class RepoUtils {
         return children;
     }
     
+    public static void FindChildren(IXConnection ixConn, String arcPath, File exportPath, boolean exportReferences) {        
+    FindResult fr = new FindResult();
+    try {
+        EditInfo ed = ixConn.ix().checkoutSord(arcPath, EditInfoC.mbOnlyId, LockC.NO);
+
+        int parentId = ed.getSord().getId();
+
+        FindInfo fi = new FindInfo();
+        fi.setFindChildren(new FindChildren());
+        fi.getFindChildren().setParentId(Integer.toString(parentId));
+        fi.getFindChildren().setEndLevel(1);
+        SordZ sordZ = SordC.mbMin;
+
+        int idx = 0;
+        fr = ixConn.ix().findFirstSords(fi, 1000, sordZ);
+        while (true) {
+            for (Sord sord : fr.getSords()) {
+                boolean isFolder = sord.getType() < SordC.LBT_DOCUMENT;
+                boolean isDocument = sord.getType() >= SordC.LBT_DOCUMENT && sord.getType() <= SordC.LBT_DOCUMENT_MAX;
+                boolean isReference = sord.getParentId() != parentId;
+
+                boolean doExportScript = false;
+                // Keine Referenzen ausgeben
+                if (!exportReferences) {
+                    if (!isReference) {
+                        doExportScript = true;
+                    }
+                }
+                // Referenzen mit ausgeben
+                else {
+                    doExportScript = true;
+                }
+                if (doExportScript) {
+                    // Wenn Ordner rekursiv aufrufen
+                    if (isFolder) {
+                        // Neuen Ordner in Windows anlegen, falls noch nicht vorhanden
+                        File subFolderPath = new File(exportPath + "\\" + sord.getName());
+                        if (!subFolderPath.exists()) {
+                            try {
+                                subFolderPath.mkdirs();
+                            } catch (Exception ex) {
+                                System.out.println("Exception mkdir(): " + ex.getMessage() + " " + subFolderPath);
+                            }
+                        }
+                        FindChildren(ixConn, arcPath + "/" + sord.getName(), subFolderPath, exportReferences);
+                    }
+                    // Wenn Dokument Pfad und Name ausgeben
+                    if (isDocument) {
+                        File outFile = new File("");
+                        try {
+                            // Dokument aus Archiv downloaden und in Windows anlegen
+                            ed = ixConn.ix().checkoutDoc(Integer.toString(sord.getId()), null, EditInfoC.mbDocument, LockC.NO);
+                            DocVersion dv = ed.getDocument().getDocs()[0];
+                            outFile = new File(exportPath + "\\" + sord.getName() + "." + dv.getExt());
+                            if (outFile.exists()) {
+                                outFile.delete();
+                            }
+                            ixConn.download(dv.getUrl(), outFile);    
+                            System.out.println("Arcpath=" + arcPath + "/" + sord.getName() + "  Maskname=" + sord.getMaskName());
+                        } catch (RemoteException ex) {
+                            System.out.println("RemoteException: " + ex.getMessage() + " " + outFile);
+                        } catch (ArrayIndexOutOfBoundsException ex) {
+                            System.out.println("ArrayIndexOutOfBoundsException: " + ex.getMessage() + " " + outFile);
+                        }
+                    }
+                }
+            }
+            if (!fr.isMoreResults()) break;
+            idx += fr.getSords().length;
+            fr = ixConn.ix().findNextSords(fr.getSearchId(), idx, 1000, sordZ);
+        }
+    } catch (RemoteException ex) {
+        System.out.println("RemoteException: " + ex.getMessage());   
+    } finally {
+        if (fr != null) {
+            try {
+                ixConn.ix().findClose(fr.getSearchId());
+            } catch (RemoteException ex) {
+                System.out.println("RemoteException: " + ex.getMessage());
+            }
+        }            
+    }
+} 
+
     static String DownloadDocumentToString (IXConnection ixConn, Sord s) {
         String docText = "";
         try {

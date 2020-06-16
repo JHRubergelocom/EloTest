@@ -143,6 +143,7 @@ public class EloTest extends Application {
         entries.add("ranger");
         entries.add("gitpullall");
         entries.add("search");
+        entries.add("export");
         fillListView(lblUnittestTools, "Unittest Tools", listvUnittestTools, entries);
     }
 

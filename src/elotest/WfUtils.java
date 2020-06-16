@@ -17,6 +17,7 @@ import de.elo.ix.client.WFDiagramZ;
 import de.elo.ix.client.WFTypeC;
 import de.elo.ix.client.WorkflowExportOptions;
 import de.elo.ix.client.WorkflowExportOptionsC;
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
+import javafx.application.Platform;
 
 /**
  *
@@ -63,6 +65,46 @@ class WfUtils {
         return workflows;        
     }
     
+    static void FindWorkflows(IXConnection ixConn, File exportPath) {
+        FindWorkflowInfo findWorkflowInfo = new FindWorkflowInfo();
+        findWorkflowInfo.setType(WFTypeC.TEMPLATE);
+        
+        int max = 100;
+        int idx = 0;
+        FindResult findResult = new FindResult(); 
+        List<WFDiagram> wfList = new ArrayList<>();
+        WFDiagramZ checkoutOptions = WFDiagramC.mbLean;
+        try {
+            findResult = ixConn.ix().findFirstWorkflows(findWorkflowInfo, max, checkoutOptions);
+            while (true) {
+                WFDiagram[] wfArray = findResult.getWorkflows();   
+                wfList.addAll(Arrays.asList(wfArray));
+                if (!findResult.isMoreResults()) {
+                  break;
+                }
+                idx += wfArray.length;
+                findResult = ixConn.ix().findNextWorkflows(findResult.getSearchId(), idx, max);
+            }
+          } catch (RemoteException ex) {
+                System.out.println("RemoteException: " + ex.getMessage());                                
+
+          } finally {
+            if (findResult != null) {
+                try {
+                    ixConn.ix().findClose(findResult.getSearchId());
+                } catch (RemoteException ex) {
+                    System.out.println("RemoteException: " + ex.getMessage()); 
+                }
+            }
+        }        
+        WFDiagram[] workflows = new WFDiagram[wfList.size()];
+        workflows = wfList.toArray(workflows);
+
+        for (WFDiagram wf : workflows) {
+            ExportWorkflow(ixConn, exportPath, wf);
+        }        
+    }
+
     private static WFDiagram[] GetTemplates(IXConnection ixConn) {
         FindWorkflowInfo info = new FindWorkflowInfo();
         info.setType(WFTypeC.TEMPLATE);
@@ -88,6 +130,32 @@ class WfUtils {
         return GetWorkflowAsJsonText(ixConn, workflowId);
     }
     
+    private static void ExportWorkflow(IXConnection ixConn, File exportPath, WFDiagram wf) {
+        try {
+            WFDiagram wfDiag = ixConn.ix().checkoutWorkflowTemplate(wf.getName(), "", new WFDiagramZ(WFDiagramC.mbId), LockC.NO);
+            WorkflowExportOptions workflowExportOptions = new WorkflowExportOptions();
+            workflowExportOptions.setFlowId(Integer.toString(wfDiag.getId()));
+
+            workflowExportOptions.setFormat(WorkflowExportOptionsC.FORMAT_JSON);
+            FileData fileData = ixConn.ix().exportWorkflow(workflowExportOptions);
+            String jsonData = new String(fileData.getData(), "UTF-8");
+            jsonData = JsonUtils.formatJsonString(jsonData);  
+            
+            String dirName = exportPath + "\\Workflows";
+            String fileName = wf.getName();
+            FileUtils.SaveToFile(dirName, fileName, jsonData, "json");
+            System.out.println("Save Workflow: '" + wf.getName() + "'");                        
+        } catch (RemoteException ex) {
+            System.out.println("RemoteException: " + ex.getMessage());
+            
+        } catch (UnsupportedEncodingException ex) {
+            System.out.println("UnsupportedEncodingException: " + ex.getMessage());
+            Platform.runLater(() -> {
+                EloTest.showAlert("Achtung!", "UnsupportedEncodingException", "System.UnsupportedEncodingException message: " + ex.getMessage());
+            });            
+        }        
+    }
+
     private static String ExportWorkflowTemplate(IXConnection ixConn, WFDiagram wf) throws RemoteException, UnsupportedEncodingException {
         int workflowTemplateId = GetWorkflowTemplateId(ixConn, wf.getName());  
         return ExportWorkflow(ixConn, workflowTemplateId);        

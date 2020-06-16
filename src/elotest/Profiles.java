@@ -127,6 +127,10 @@ class Profiles {
         return gitUser;
     }
 
+    public String getArcPath() {
+        return arcPath;
+    }
+
     public Map<String, Profile> getProfiles() {
       return profiles;  
     } 
