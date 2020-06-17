@@ -54,7 +54,8 @@ public class EloTest extends Application {
     
     private final TextField txtPattern = new TextField();
     private final CheckBox chkCaseSensitiv = new CheckBox("Case sensitiv");
-
+    
+    private final TabPane tabPane = new TabPane();
     
     private void fillListView(Label label, String lblText, ListView<String> listview, List <String> entries) {
         label.setText(lblText);
@@ -233,6 +234,7 @@ public class EloTest extends Application {
         listvEloServices.setDisable(value);
         txtPattern.setDisable(value);        
         chkCaseSensitiv.setDisable(value); 
+        tabPane.setDisable(value);
     }
     
     public static void showAlert(String title, String headerText, String contentText) {
@@ -282,7 +284,6 @@ public class EloTest extends Application {
         root.add(cmbProfile, 1, 0);
         GridPane.setHalignment(cmbProfile, HPos.RIGHT);
 
-        TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         VBox vbox = new VBox(lblEloCli, listvEloCli);
         Tab tab = new Tab("ELO Cli", vbox);
