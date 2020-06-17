@@ -10,17 +10,22 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -36,7 +41,7 @@ public class EloTest extends Application {
     private final EloService eloService = new EloService();
     
     private final Label lblProfile = new Label(); 
-    private final ListView<String> listvProfile = new ListView<>(); 
+    private final ComboBox<String> cmbProfile = new ComboBox<>(); 
     
     private final Label lblEloCli = new Label(); 
     private final ListView<String> listvEloCli = new ListView<>(); 
@@ -59,33 +64,34 @@ public class EloTest extends Application {
         listview.setStyle(LISTVIEW_STYLE);
     }
     
-    private void fillListViewProfile() {
+   private void fillComboBox(Label label, String lblText, ComboBox<String> combobox, List<String> entries) {
+        label.setText(lblText);
+        label.setStyle(LABEL_STYLE);
+        
+        combobox.setItems(FXCollections.observableArrayList(entries));
+        combobox.setStyle(LISTVIEW_STYLE);       
+   }
+    
+    private void fillComboBoxProfile() {
         final ArrayList<String> entries = new ArrayList<>();
         
         profiles.getProfiles().forEach((n, p) -> {
             entries.add(p.getName());
         }); 
         
-        fillListView(lblProfile, "Profile", listvProfile, entries);        
+        fillComboBox(lblProfile, "Profile", cmbProfile, entries);        
     }
     
-    private void initListViewProfile() {
-        fillListViewProfile();        
+    private void initComboBoxProfile() {
+        fillComboBoxProfile();        
         String selectedProfileName = eloProperties.getSelectedProfile();
         if (selectedProfileName != null) {
-            listvProfile.getSelectionModel().select(selectedProfileName);            
+            cmbProfile.getSelectionModel().select(selectedProfileName);            
         } else {
-            listvProfile.getSelectionModel().select(0);                    
+            cmbProfile.getSelectionModel().select(0);                    
         }
-/*        
-        listvProfile.setOnMouseClicked((MouseEvent event) -> {
-            if (event.getClickCount() == 2) {
-                String currentItemSelected = listvProfile.getSelectionModel().getSelectedItem();
-                EloTest.ShowAlert("Achtung!", "Doppelclick", currentItemSelected);
-            }
-        });      
-*/        
-        listvProfile.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+        
+        cmbProfile.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             System.out.println("Selected item: " + newValue);
             eloProperties.setSelectedProfile(newValue);
             fillListViewEloCli();
@@ -93,7 +99,7 @@ public class EloTest extends Application {
     }
   
     private void fillListViewEloCli() {
-        String pname = listvProfile.getSelectionModel().getSelectedItem();
+        String pname = cmbProfile.getSelectionModel().getSelectedItem();
                 
         final ArrayList<String> entries = new ArrayList<>();        
         Profile p = profiles.getProfiles().get(pname);
@@ -117,10 +123,7 @@ public class EloTest extends Application {
         listvEloCli.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 String currentItemSelected = listvEloCli.getSelectionModel().getSelectedItem();
-                /*
-                EloTest.ShowAlert("Achtung!", "Doppelclick", currentItemSelected);
-                */
-                String pname = listvProfile.getSelectionModel().getSelectedItem();
+                String pname = cmbProfile.getSelectionModel().getSelectedItem();
                 Profile profile = profiles.getProfiles().get(pname);
                 EloCommand eloCommand = profile.getEloCommands().get(currentItemSelected);
                 eloService.runEloCommand(eloCommand, profile, profiles, this);                
@@ -131,8 +134,7 @@ public class EloTest extends Application {
             System.out.println("Selected item: " + newValue);
             eloProperties.setSelectedEloCli(newValue);
         });   
-        
-        
+                
     }
     
     private void fillListViewUnittestTools() {        
@@ -159,11 +161,7 @@ public class EloTest extends Application {
         listvUnittestTools.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 String currentItemSelected = listvUnittestTools.getSelectionModel().getSelectedItem();
-                
-                /*
-                EloTest.ShowAlert("Achtung!", "Doppelclick", currentItemSelected);
-                */ 
-                String pname = listvProfile.getSelectionModel().getSelectedItem();
+                String pname = cmbProfile.getSelectionModel().getSelectedItem();
                 Profile profile = profiles.getProfiles().get(pname);
                 eloService.runUnittestTools(currentItemSelected, profile, profiles, this);
             }
@@ -197,11 +195,7 @@ public class EloTest extends Application {
         listvEloServices.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 String currentItemSelected = listvEloServices.getSelectionModel().getSelectedItem();
-                
-                /*
-                EloTest.ShowAlert("Achtung!", "Doppelclick", currentItemSelected);
-                */ 
-                String pname = listvProfile.getSelectionModel().getSelectedItem();
+                String pname = cmbProfile.getSelectionModel().getSelectedItem();
                 Profile profile = profiles.getProfiles().get(pname);
                 eloService.runEloServices(currentItemSelected, profile, profiles, this);
             }
@@ -230,7 +224,7 @@ public class EloTest extends Application {
     
     public void setDisableControls(boolean value) {
         lblProfile.setDisable(value);
-        listvProfile.setDisable(value);        
+        cmbProfile.setDisable(value);        
         lblEloCli.setDisable(value);
         listvEloCli.setDisable(value);
         lblUnittestTools.setDisable(value);
@@ -263,18 +257,18 @@ public class EloTest extends Application {
         GridPane root = new GridPane();
         
         for (int i = 0; i < 5; i++) {
-            ColumnConstraints column = new ColumnConstraints(150);
+            ColumnConstraints column = new ColumnConstraints(130);
             root.getColumnConstraints().add(column);
         }
         
-        root.getRowConstraints().add(new RowConstraints(20));
+        root.getRowConstraints().add(new RowConstraints(30));
         root.getRowConstraints().add(new RowConstraints(320));
 
         root.setPadding(new Insets(10, 10, 10, 10));
         root.setHgap(7);
         root.setVgap(7);
         
-        initListViewProfile();
+        initComboBoxProfile();
         
         initListViewEloCli();
         
@@ -285,29 +279,29 @@ public class EloTest extends Application {
         initSearchPattern();
         
         root.add(lblProfile, 0, 0);
-        root.add(listvProfile, 0, 1);
+        root.add(cmbProfile, 1, 0);
+        GridPane.setHalignment(cmbProfile, HPos.RIGHT);
 
-        root.add(lblEloCli, 1, 0);
-        root.add(listvEloCli, 1, 1);
+        TabPane tabPane = new TabPane();
+        VBox vbox = new VBox(lblEloCli, listvEloCli);
+        Tab tab = new Tab("ELO Cli", vbox);
+        tabPane.getTabs().add(tab);
         
-        root.add(lblUnittestTools, 2, 0);
-        root.add(listvUnittestTools, 2, 1);
-        
-        root.add(lblEloServices, 3, 0);
-        root.add(listvEloServices, 3, 1);
-        
-        
-        GridPane gpSearch = new GridPane();
-        gpSearch.setPadding(new Insets(0, 0, 0, 0));
-        gpSearch.setHgap(7);
-        gpSearch.setVgap(7);
-        
-        gpSearch.add(txtPattern, 0, 0);
-        gpSearch.add(chkCaseSensitiv, 1, 0);
-        
-        root.add(gpSearch, 0, 2, 2, 1);
+        vbox = new VBox(lblUnittestTools, listvUnittestTools);
+        tab = new Tab("Unittest Tools", vbox);
+        tabPane.getTabs().add(tab);
 
-        Scene scene = new Scene(root, 640, 400);
+        vbox = new VBox(lblEloServices, listvEloServices);
+        tab = new Tab("ELO Services", vbox);
+        tabPane.getTabs().add(tab);
+        
+        root.add(tabPane, 0, 1, 2, 1);
+
+        root.add(txtPattern, 0, 2);
+        root.add(chkCaseSensitiv, 1, 2);        
+        GridPane.setHalignment(chkCaseSensitiv, HPos.RIGHT);
+
+        Scene scene = new Scene(root, 290, 410);
         
         primaryStage.setTitle("ELO Test");
         primaryStage.setScene(scene);
