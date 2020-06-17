@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="EloTest.jar" size="71821" download="eager" />
+    <jar href="EloTest.jar" size="71908" download="eager" />
     <jar href="lib\EloixClient.jar" size="4076166" download="eager" />
     <jar href="lib\commons-codec-1.10.jar" size="284184" download="eager" />
     <jar href="lib\commons-logging-1.2.jar" size="61829" download="eager" />

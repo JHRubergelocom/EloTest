@@ -283,6 +283,7 @@ public class EloTest extends Application {
         GridPane.setHalignment(cmbProfile, HPos.RIGHT);
 
         TabPane tabPane = new TabPane();
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         VBox vbox = new VBox(lblEloCli, listvEloCli);
         Tab tab = new Tab("ELO Cli", vbox);
         tabPane.getTabs().add(tab);
