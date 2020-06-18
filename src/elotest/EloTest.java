@@ -18,6 +18,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -56,6 +57,8 @@ public class EloTest extends Application {
     private final CheckBox chkCaseSensitiv = new CheckBox("Case sensitiv");
     
     private final TabPane tabPane = new TabPane();
+
+    private final ProgressBar pgBar = new ProgressBar(0);
     
     private void fillListView(Label label, String lblText, ListView<String> listview, List <String> entries) {
         label.setText(lblText);
@@ -65,7 +68,7 @@ public class EloTest extends Application {
         listview.setStyle(LISTVIEW_STYLE);
     }
     
-   private void fillComboBox(Label label, String lblText, ComboBox<String> combobox, List<String> entries) {
+    private void fillComboBox(Label label, String lblText, ComboBox<String> combobox, List<String> entries) {
         label.setText(lblText);
         label.setStyle(LABEL_STYLE);
         
@@ -253,6 +256,10 @@ public class EloTest extends Application {
         return chkCaseSensitiv;
     }
     
+    public ProgressBar getPgBar() {
+        return pgBar;
+    }
+    
     @Override
     public void start(Stage primaryStage) {     
         
@@ -298,12 +305,15 @@ public class EloTest extends Application {
         tabPane.getTabs().add(tab);
         
         root.add(tabPane, 0, 1, 2, 1);
+        
+        pgBar.setMaxWidth(Double.MAX_VALUE);
+        root.add(pgBar, 0, 2, 2, 1);        
 
-        root.add(txtPattern, 0, 2);
-        root.add(chkCaseSensitiv, 1, 2);        
+        root.add(txtPattern, 0, 3);
+        root.add(chkCaseSensitiv, 1, 3);        
         GridPane.setHalignment(chkCaseSensitiv, HPos.RIGHT);
 
-        Scene scene = new Scene(root, 290, 410);
+        Scene scene = new Scene(root, 290, 435);
         
         primaryStage.setTitle("ELO Test");
         primaryStage.setScene(scene);

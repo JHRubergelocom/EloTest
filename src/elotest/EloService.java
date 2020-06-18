@@ -9,6 +9,7 @@ import de.elo.ix.client.IXConnection;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,6 +22,7 @@ import java.util.Scanner;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import org.json.JSONObject;
 
 /**
  *
@@ -68,10 +70,14 @@ class EloService extends Service<Boolean>{
         this.eloService = eloService;
     }
 
-
-
     private void setIxConn(IXConnection ixConn) {
         this.ixConn = ixConn;        
+    }
+    
+    private void setProgress(double pgProgress) {
+        Platform.runLater(() -> {
+            eloTest.getPgBar().setProgress(pgProgress);
+        });        
     }
     
     private void executeEloCli() {
@@ -97,9 +103,28 @@ class EloService extends Service<Boolean>{
 
             htmlBody += "<h1>"+ psCommand + "</h1>";
 
+            String jsonWorkspace = profile.getWorkingDir(profiles.getGitSolutionsDir()) + "\\.workspace\\" + eloCommand.getWorkspace() + ".json";
+            BufferedReader in = new BufferedReader(new FileReader(jsonWorkspace));
+            String jsonString = "";
+            while ((line = in.readLine()) != null) {
+                // System.out.println("Gelesene Zeile: " + line);
+                jsonString = jsonString.concat(line);
+            
+            }
+            JSONObject jobjWorkspace = new JSONObject(jsonString);        
+            JSONObject[] jarrayDependencies = JsonUtils.getArray(jobjWorkspace, "dependencies");
+            int countFolder = jarrayDependencies.length;  
+            double pgIncrement = (1.0/countFolder);
+            double pgProgress = 0.0;            
+            setProgress(pgProgress);
+            
             while ((line = br.readLine()) != null) {
                 htmlBody += "<h4>"+ line + "</h4>";
                 System.out.println(line);
+                if (line.contains("- Pushing")) {
+                    pgProgress = pgProgress + pgIncrement;
+                    setProgress(pgProgress);
+                }                                
                 if (line.contains("already exists")) {
                     break;
                 }
