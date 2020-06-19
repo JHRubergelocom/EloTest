@@ -74,14 +74,17 @@ class EloService extends Service<Boolean>{
         this.ixConn = ixConn;        
     }
     
-    private void setProgress(double pgProgress) {
+    private void setProgress(double pgProgress, String txtProgress, String txtColor) {
         Platform.runLater(() -> {
             eloTest.getPgBar().setProgress(pgProgress);
+            eloTest.getTxtProgress().setText(txtProgress);
+            EloTest.setTextFieldColor(eloTest.getTxtProgress(), txtColor);
         });        
     }
     
     private void executeEloCli() {
         try {
+            setProgress(0.0, "", "");
             String psCommand = eloCommand.getCmd() + " -stack " + profile.getStack(profiles.getGitUser()) + " -workspace " + eloCommand.getWorkspace();
             if (eloCommand.getVersion().length() > 0) {
                 psCommand = psCommand + " -version " + eloCommand.getVersion();                
@@ -113,23 +116,26 @@ class EloService extends Service<Boolean>{
             }
             JSONObject jobjWorkspace = new JSONObject(jsonString);        
             JSONObject[] jarrayDependencies = JsonUtils.getArray(jobjWorkspace, "dependencies");
-            int countFolder = jarrayDependencies.length;  
+            int countFolder = jarrayDependencies.length + 1;  
             double pgIncrement = (1.0/countFolder);
             double pgProgress = 0.0;            
-            setProgress(pgProgress);
+            setProgress(pgProgress, "", "");
             
             while ((line = br.readLine()) != null) {
                 htmlBody += "<h4>"+ line + "</h4>";
                 System.out.println(line);
-                if (line.contains("- Pushing")) {
+                if (line.contains("- Pushing") || line.contains("- Pulling")) {
                     pgProgress = pgProgress + pgIncrement;
-                    setProgress(pgProgress);
+                    setProgress(pgProgress, line, "");
                 }                                
                 if (line.contains("already exists")) {
                     break;
                 }
             }
 
+            pgProgress = pgProgress + pgIncrement;
+            setProgress(pgProgress, "Ready!", "");
+            
             if (line != null) {
                 if (line.contains("already exists")) {
                     try (OutputStream os = p.getOutputStream()) {
@@ -141,6 +147,7 @@ class EloService extends Service<Boolean>{
                         input += "\n";
                         bw.write(input);
                         bw.flush();
+                        setProgress(1.0, line, "red");
                     }
                     br.close();
                 }                

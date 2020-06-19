@@ -1,8 +1,8 @@
 #EloProperties
-#Thu Jun 18 10:30:33 CEST 2020
+#Fri Jun 19 13:40:19 CEST 2020
 CaseSensitiv=true
 SelectedEloServices=Webclient
 Pattern=RF_
-SelectedProfile=recruiting
+SelectedProfile=common
 SelectedEloCli=eloPrepare
 SelectedUnittestTools=export

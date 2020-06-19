@@ -36,6 +36,7 @@ import javafx.stage.Stage;
 public class EloTest extends Application {
     static final String LABEL_STYLE = "-fx-font-weight: bold; -fx-font-style: regular; -fx-font-size: 18px";
     static final String LISTVIEW_STYLE = "-fx-font-style: regular; -fx-font-size: 14px";
+    static final String TEXTFIELD_STYLE = "-fx-font-style: regular; -fx-font-size: 12px";
     
     private final Profiles profiles = new Profiles("Profiles.json");
     private final EloProperties eloProperties = new EloProperties();
@@ -59,6 +60,7 @@ public class EloTest extends Application {
     private final TabPane tabPane = new TabPane();
 
     private final ProgressBar pgBar = new ProgressBar(0);
+    private final TextField txtProgress = new TextField();
     
     private void fillListView(Label label, String lblText, ListView<String> listview, List <String> entries) {
         label.setText(lblText);
@@ -248,6 +250,15 @@ public class EloTest extends Application {
         alert.showAndWait();                     
     }
     
+    public static void setTextFieldColor(TextField textField, String color) {
+        
+        if(!color.contentEquals("")) {
+            textField.setStyle("-fx-text-fill: " + color);                    
+        } else {
+            textField.setStyle("-fx-text-fill: regular");   
+        }        
+    }
+    
     public TextField getTxtPattern() {
         return txtPattern;
     }
@@ -260,13 +271,17 @@ public class EloTest extends Application {
         return pgBar;
     }
     
+    public TextField getTxtProgress() {
+        return txtProgress;
+    }
+    
     @Override
     public void start(Stage primaryStage) {     
         
         GridPane root = new GridPane();
         
         for (int i = 0; i < 5; i++) {
-            ColumnConstraints column = new ColumnConstraints(130);
+            ColumnConstraints column = new ColumnConstraints(150);
             root.getColumnConstraints().add(column);
         }
         
@@ -306,14 +321,18 @@ public class EloTest extends Application {
         
         root.add(tabPane, 0, 1, 2, 1);
         
-        pgBar.setMaxWidth(Double.MAX_VALUE);
-        root.add(pgBar, 0, 2, 2, 1);        
+        root.add(txtProgress, 0, 2, 2, 1);
+        txtProgress.setStyle(TEXTFIELD_STYLE);
 
-        root.add(txtPattern, 0, 3);
-        root.add(chkCaseSensitiv, 1, 3);        
+        pgBar.setMaxWidth(Double.MAX_VALUE);
+        root.add(pgBar, 0, 3, 2, 1);        
+
+        root.add(txtPattern, 0, 4);
+        txtPattern.setStyle(TEXTFIELD_STYLE);
+        root.add(chkCaseSensitiv, 1, 4);        
         GridPane.setHalignment(chkCaseSensitiv, HPos.RIGHT);
 
-        Scene scene = new Scene(root, 290, 435);
+        Scene scene = new Scene(root, 330, 460);
         
         primaryStage.setTitle("ELO Test");
         primaryStage.setScene(scene);
