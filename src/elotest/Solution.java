@@ -16,12 +16,12 @@ import org.json.JSONObject;
  *
  * @author ruberg
  */
-public class Profile {
+public class Solution {
     private String name;
     private List<EloPackage> eloPackages;
     private Map<String, EloCommand> eloCommands;
 
-    Profile(JSONObject obj) {
+    Solution(JSONObject obj) {
         name = "";
         eloPackages = new ArrayList<>();
         eloCommands = new HashMap<>();

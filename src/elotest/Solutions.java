@@ -21,8 +21,8 @@ import org.json.JSONObject;
  *
  * @author ruberg
  */
-class Profiles {
-    private SortedMap<String, Profile> profiles;
+class Solutions {
+    private SortedMap<String, Solution> solutions;
     private String gitSolutionsDir;
     private String gitDevDir;
     private String gitUser;
@@ -30,8 +30,8 @@ class Profiles {
     private String user;
     private String pwd;    
     
-    Profiles(String jsonFile) {
-        profiles = new TreeMap<>();
+    Solutions(String jsonFile) {
+        solutions = new TreeMap<>();
         gitSolutionsDir = "";
         gitDevDir = "";
         gitUser = "";
@@ -39,7 +39,7 @@ class Profiles {
         user = "";
         pwd = "";
 
-        JSONObject jobjProfiles;
+        JSONObject jobjSolutions;
         String jsonString = "";
         BufferedReader in = null;
         File file = new File(jsonFile); 
@@ -64,41 +64,41 @@ class Profiles {
                 }
             }
         }
-        jobjProfiles = new JSONObject(jsonString);        
-        JSONObject[] jarrayProfiles = JsonUtils.getArray(jobjProfiles, "profiles");
-        for(JSONObject objEloProfile: jarrayProfiles){
-            profiles.put(objEloProfile.getString("name"), new Profile(objEloProfile));
+        jobjSolutions = new JSONObject(jsonString);        
+        JSONObject[] jarraySolutions = JsonUtils.getArray(jobjSolutions, "solutions");
+        for(JSONObject objEloSolution: jarraySolutions){
+            solutions.put(objEloSolution.getString("name"), new Solution(objEloSolution));
         }
         
         try {
-            gitSolutionsDir = jobjProfiles.getString("gitSolutionsDir");            
+            gitSolutionsDir = jobjSolutions.getString("gitSolutionsDir");            
         } catch (JSONException ex) {            
         }
         try {
-            gitDevDir = jobjProfiles.getString("gitDevDir");            
+            gitDevDir = jobjSolutions.getString("gitDevDir");            
         } catch (JSONException ex) {            
         }
         try {
-            gitUser = jobjProfiles.getString("gitUser");            
+            gitUser = jobjSolutions.getString("gitUser");            
         } catch (JSONException ex) {            
         }
         try {
-            arcPath = jobjProfiles.getString("arcPath");            
+            arcPath = jobjSolutions.getString("arcPath");            
         } catch (JSONException ex) {            
         }
         try {
-            user = jobjProfiles.getString("user");            
+            user = jobjSolutions.getString("user");            
         } catch (JSONException ex) {            
         }
         try {
-            pwd = jobjProfiles.getString("pwd");              
+            pwd = jobjSolutions.getString("pwd");              
         } catch (JSONException ex) {            
         }
         
     }
 
-    Profiles() {
-        profiles = new TreeMap<>();
+    Solutions() {
+        solutions = new TreeMap<>();
         gitSolutionsDir = "";
         gitDevDir = "";
         gitUser = "";
@@ -131,8 +131,8 @@ class Profiles {
         return arcPath;
     }
 
-    public Map<String, Profile> getProfiles() {
-      return profiles;  
+    public Map<String, Solution> getSolutions() {
+      return solutions;  
     } 
     
 }

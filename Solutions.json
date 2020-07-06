@@ -1,5 +1,5 @@
 {
-  "profiles": [
+  "solutions": [
     {
       "name": "common",
       "eloPackages": [
@@ -34,7 +34,7 @@
     },
     {
       "name": "invoice",
-      "eloPackages": [{"folder":"invoice", "name":"invoice"}, {"folder":"invoice_datev", "name":"invoice"}, {"folder":"invoice_electronic", "name":"invoice"}, {"folder":"invoice_zugferd", "name":"invoice"}],
+      "eloPackages": [{"folder":"invoice", "name":"invoice"}, {"folder":"invoice_datev", "name":"invoice"}, {"folder":"invoice_electronic", "name":"invoice"}, {"folder":"connector_dx", "name":"connector_dx"}],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"12.00"}

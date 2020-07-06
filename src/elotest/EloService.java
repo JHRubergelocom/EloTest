@@ -35,8 +35,8 @@ class EloService extends Service<Boolean>{
     
     private String typeCommand;
     private EloCommand eloCommand;
-    private Profile profile;
-    private Profiles profiles;
+    private Solution solution;
+    private Solutions solutions;
     private EloTest eloTest;
     private String unittestTool;
     private String eloService;    
@@ -50,12 +50,12 @@ class EloService extends Service<Boolean>{
         this.eloCommand = eloCommand;
     }
 
-    private void setProfile(Profile profile) {
-        this.profile = profile;
+    private void setSolution(Solution solution) {
+        this.solution = solution;
     }
     
-    private void setProfiles(Profiles profiles) {
-        this.profiles = profiles;
+    private void setSolutions(Solutions solutions) {
+        this.solutions = solutions;
     }
     
     private void setEloTest(EloTest eloTest) {
@@ -84,14 +84,14 @@ class EloService extends Service<Boolean>{
     
     private void executeEloCli() {
         try {
-            setProgress(0.0, "", "");
-            String psCommand = eloCommand.getCmd() + " -stack " + profile.getStack(profiles.getGitUser()) + " -workspace " + eloCommand.getWorkspace();
+            setProgress(0.0, "Start!", "");
+            String psCommand = eloCommand.getCmd() + " -stack " + solution.getStack(solutions.getGitUser()) + " -workspace " + eloCommand.getWorkspace();
             if (eloCommand.getVersion().length() > 0) {
                 psCommand = psCommand + " -version " + eloCommand.getVersion();                
             }
             
             ProcessBuilder pb = new ProcessBuilder("powershell.exe", psCommand);                
-            pb.directory(new File (profile.getWorkingDir(profiles.getGitSolutionsDir())));
+            pb.directory(new File (solution.getWorkingDir(solutions.getGitSolutionsDir())));
             Process p; 
             p = pb.start();  
             
@@ -105,8 +105,9 @@ class EloService extends Service<Boolean>{
             String htmlBody = "<body>\n";
 
             htmlBody += "<h1>"+ psCommand + "</h1>";
+            setProgress(0.0, psCommand, "");
 
-            String jsonWorkspace = profile.getWorkingDir(profiles.getGitSolutionsDir()) + "\\.workspace\\" + eloCommand.getWorkspace() + ".json";
+            String jsonWorkspace = solution.getWorkingDir(solutions.getGitSolutionsDir()) + "\\.workspace\\" + eloCommand.getWorkspace() + ".json";
             BufferedReader in = new BufferedReader(new FileReader(jsonWorkspace));
             String jsonString = "";
             while ((line = in.readLine()) != null) {
@@ -124,6 +125,13 @@ class EloService extends Service<Boolean>{
             while ((line = br.readLine()) != null) {
                 htmlBody += "<h4>"+ line + "</h4>";
                 System.out.println(line);
+                
+                if (line.contains("Starting development stack") || line.contains("Waiting for services") 
+                                                                || line.contains("Mandatory services are up")
+                                                                || line.contains("Pushing Workspace de")) {
+                    setProgress(pgProgress, line, "");
+                }
+                
                 if (line.contains("- Pushing") || line.contains("- Pulling")) {
                     pgProgress = pgProgress + pgIncrement;
                     setProgress(pgProgress, line, "");
@@ -173,29 +181,29 @@ class EloService extends Service<Boolean>{
     private void executeUnittestTools() {
         switch(unittestTool) {
             case "show":                
-                EloApp.ShowUnittests(ixConn, profile, profiles);
+                EloApp.ShowUnittests(ixConn, solution, solutions);
                 break;
             case "matching":
-                UnittestUtils.ShowReportMatchUnittest(ixConn, profile);
+                UnittestUtils.ShowReportMatchUnittest(ixConn, solution);
                 break;
             case "create":
-                UnittestUtils.CreateUnittest(ixConn, profile);                
+                UnittestUtils.CreateUnittest(ixConn, solution);                
                 break;
             case "ranger":
-                EloApp.ShowRancher(profiles);                
+                EloApp.ShowRancher(solutions);                
                 break;
             case "gitpullall":
-                executeGitPullAll(profiles.getDevDir());
-                executeGitPullAll(profiles.getGitSolutionsDir());                
+                executeGitPullAll(solutions.getDevDir());
+                executeGitPullAll(solutions.getGitSolutionsDir());                
                 break; 
             case "search":
                 try {
-                    SearchUtils.ShowSearchResult(ixConn, profile, eloTest);
+                    SearchUtils.ShowSearchResult(ixConn, solution, eloTest);
                 } catch (UnsupportedEncodingException ex) {
                 }
                 break;
             case "export":
-                EloExport.StartExport(ixConn, profile, profiles);
+                EloExport.StartExport(ixConn, solution, solutions);
                 break;
             default:
                 Platform.runLater(() -> {
@@ -314,16 +322,16 @@ class EloService extends Service<Boolean>{
         return Optional.of(list);
     }
     
-    public void runEloCommand(EloCommand eloCommand, Profile profile, Profiles profiles, EloTest eloTest) {
+    public void runEloCommand(EloCommand eloCommand, Solution solution, Solutions solutions, EloTest eloTest) {
         setTypeCommand(ELOCLI);
         setEloCommand(eloCommand);
-        setProfile(profile);
-        setProfiles(profiles);
+        setSolution(solution);
+        setSolutions(solutions);
         setEloTest(eloTest);
 
         if (!eloCommand.getName().equals("eloPrepare")) {
             try {
-                ixConn = Connection.getIxConnection(profile, profiles);  
+                ixConn = Connection.getIxConnection(solution, solutions);  
                 if (isRunning()) {
                     System.out.println("Already running. Nothing to do.");
                 } else {
@@ -343,13 +351,13 @@ class EloService extends Service<Boolean>{
         }
     }
     
-    public void runUnittestTools(String unittestTool, Profile profile, Profiles profiles, EloTest eloTest) {
+    public void runUnittestTools(String unittestTool, Solution solution, Solutions solutions, EloTest eloTest) {
         try {
-            ixConn = Connection.getIxConnection(profile, profiles);            
+            ixConn = Connection.getIxConnection(solution, solutions);            
             setTypeCommand(UNITTESTTOOLS);
             setUnittestTool(unittestTool);
-            setProfile(profile);
-            setProfiles(profiles);        
+            setSolution(solution);
+            setSolutions(solutions);        
             setEloTest(eloTest);
             setIxConn(ixConn);            
             if (isRunning()) {
@@ -363,13 +371,13 @@ class EloService extends Service<Boolean>{
         } 
     }
     
-    void runEloServices(String eloService, Profile profile, Profiles profiles, EloTest eloTest) {
+    void runEloServices(String eloService, Solution solution, Solutions solutions, EloTest eloTest) {
         try {
-            ixConn = Connection.getIxConnection(profile, profiles);            
+            ixConn = Connection.getIxConnection(solution, solutions);            
             setTypeCommand(ELOSERVICES);
             setEloService(eloService);
-            setProfile(profile);
-            setProfiles(profiles);        
+            setSolution(solution);
+            setSolutions(solutions);        
             setEloTest(eloTest);
             setIxConn(ixConn);            
             if (isRunning()) {
@@ -395,8 +403,8 @@ class EloService extends Service<Boolean>{
                 switch(typeCommand) {
                     case ELOCLI:
                         if (eloCommand.getName().equals("eloPrepare")) {
-                            executeGitPullAll(profiles.getDevDir());
-                            executeGitPullAll(profiles.getGitSolutionsDir());
+                            executeGitPullAll(solutions.getDevDir());
+                            executeGitPullAll(solutions.getGitSolutionsDir());
                         }                        
                         executeEloCli();                        
                         break;

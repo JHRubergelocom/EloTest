@@ -38,12 +38,12 @@ public class EloTest extends Application {
     static final String LISTVIEW_STYLE = "-fx-font-style: regular; -fx-font-size: 14px";
     static final String TEXTFIELD_STYLE = "-fx-font-style: regular; -fx-font-size: 12px";
     
-    private final Profiles profiles = new Profiles("Profiles.json");
+    private final Solutions solutions = new Solutions("Solutions.json");
     private final EloProperties eloProperties = new EloProperties();
     private final EloService eloService = new EloService();
     
-    private final Label lblProfile = new Label(); 
-    private final ComboBox<String> cmbProfile = new ComboBox<>(); 
+    private final Label lblSolution = new Label(); 
+    private final ComboBox<String> cmbSolution = new ComboBox<>(); 
     
     private final Label lblEloCli = new Label(); 
     private final ListView<String> listvEloCli = new ListView<>(); 
@@ -78,37 +78,37 @@ public class EloTest extends Application {
         combobox.setStyle(LISTVIEW_STYLE);       
    }
     
-    private void fillComboBoxProfile() {
+    private void fillComboBoxSolution() {
         final ArrayList<String> entries = new ArrayList<>();
         
-        profiles.getProfiles().forEach((n, p) -> {
+        solutions.getSolutions().forEach((n, p) -> {
             entries.add(p.getName());
         }); 
         
-        fillComboBox(lblProfile, "Profile", cmbProfile, entries);        
+        fillComboBox(lblSolution, "Solution", cmbSolution, entries);        
     }
     
-    private void initComboBoxProfile() {
-        fillComboBoxProfile();        
-        String selectedProfileName = eloProperties.getSelectedProfile();
-        if (selectedProfileName != null) {
-            cmbProfile.getSelectionModel().select(selectedProfileName);            
+    private void initComboBoxSolution() {
+        fillComboBoxSolution();        
+        String selectedSolutionName = eloProperties.getSelectedSolution();
+        if (selectedSolutionName != null) {
+            cmbSolution.getSelectionModel().select(selectedSolutionName);            
         } else {
-            cmbProfile.getSelectionModel().select(0);                    
+            cmbSolution.getSelectionModel().select(0);                    
         }
         
-        cmbProfile.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+        cmbSolution.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             System.out.println("Selected item: " + newValue);
-            eloProperties.setSelectedProfile(newValue);
+            eloProperties.setSelectedSolution(newValue);
             fillListViewEloCli();
         });        
     }
   
     private void fillListViewEloCli() {
-        String pname = cmbProfile.getSelectionModel().getSelectedItem();
+        String pname = cmbSolution.getSelectionModel().getSelectedItem();
                 
         final ArrayList<String> entries = new ArrayList<>();        
-        Profile p = profiles.getProfiles().get(pname);
+        Solution p = solutions.getSolutions().get(pname);
         
         p.getEloCommands().forEach((n, c) -> {
             entries.add(c.getName());
@@ -129,10 +129,10 @@ public class EloTest extends Application {
         listvEloCli.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 String currentItemSelected = listvEloCli.getSelectionModel().getSelectedItem();
-                String pname = cmbProfile.getSelectionModel().getSelectedItem();
-                Profile profile = profiles.getProfiles().get(pname);
-                EloCommand eloCommand = profile.getEloCommands().get(currentItemSelected);
-                eloService.runEloCommand(eloCommand, profile, profiles, this);                
+                String pname = cmbSolution.getSelectionModel().getSelectedItem();
+                Solution solution = solutions.getSolutions().get(pname);
+                EloCommand eloCommand = solution.getEloCommands().get(currentItemSelected);
+                eloService.runEloCommand(eloCommand, solution, solutions, this);                
             }
         });      
         
@@ -167,9 +167,9 @@ public class EloTest extends Application {
         listvUnittestTools.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 String currentItemSelected = listvUnittestTools.getSelectionModel().getSelectedItem();
-                String pname = cmbProfile.getSelectionModel().getSelectedItem();
-                Profile profile = profiles.getProfiles().get(pname);
-                eloService.runUnittestTools(currentItemSelected, profile, profiles, this);
+                String pname = cmbSolution.getSelectionModel().getSelectedItem();
+                Solution solution = solutions.getSolutions().get(pname);
+                eloService.runUnittestTools(currentItemSelected, solution, solutions, this);
             }
         });      
         
@@ -201,9 +201,9 @@ public class EloTest extends Application {
         listvEloServices.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 String currentItemSelected = listvEloServices.getSelectionModel().getSelectedItem();
-                String pname = cmbProfile.getSelectionModel().getSelectedItem();
-                Profile profile = profiles.getProfiles().get(pname);
-                eloService.runEloServices(currentItemSelected, profile, profiles, this);
+                String pname = cmbSolution.getSelectionModel().getSelectedItem();
+                Solution solution = solutions.getSolutions().get(pname);
+                eloService.runEloServices(currentItemSelected, solution, solutions, this);
             }
         });      
         
@@ -229,8 +229,8 @@ public class EloTest extends Application {
     }
     
     public void setDisableControls(boolean value) {
-        lblProfile.setDisable(value);
-        cmbProfile.setDisable(value);        
+        lblSolution.setDisable(value);
+        cmbSolution.setDisable(value);        
         lblEloCli.setDisable(value);
         listvEloCli.setDisable(value);
         lblUnittestTools.setDisable(value);
@@ -292,7 +292,7 @@ public class EloTest extends Application {
         root.setHgap(7);
         root.setVgap(7);
         
-        initComboBoxProfile();
+        initComboBoxSolution();
         
         initListViewEloCli();
         
@@ -302,9 +302,9 @@ public class EloTest extends Application {
         
         initSearchPattern();
         
-        root.add(lblProfile, 0, 0);
-        root.add(cmbProfile, 1, 0);
-        GridPane.setHalignment(cmbProfile, HPos.RIGHT);
+        root.add(lblSolution, 0, 0);
+        root.add(cmbSolution, 1, 0);
+        GridPane.setHalignment(cmbSolution, HPos.RIGHT);
 
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         VBox vbox = new VBox(lblEloCli, listvEloCli);
@@ -323,6 +323,7 @@ public class EloTest extends Application {
         
         root.add(txtProgress, 0, 2, 2, 1);
         txtProgress.setStyle(TEXTFIELD_STYLE);
+        txtProgress.setEditable(false);
 
         pgBar.setMaxWidth(Double.MAX_VALUE);
         root.add(pgBar, 0, 3, 2, 1);        

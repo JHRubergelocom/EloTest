@@ -750,8 +750,8 @@ class UnittestUtils {
         return jsScript;        
     }
     
-    private static void SaveUnittestLib(String lib, String jsScript, String profileName, String libDir, String libixas) {
-        String exportPath = "C:\\Temp\\Unittests\\" + profileName + "\\"  + libDir;        
+    private static void SaveUnittestLib(String lib, String jsScript, String solutionName, String libDir, String libixas) {
+        String exportPath = "C:\\Temp\\Unittests\\" + solutionName + "\\"  + libDir;        
         String eloPackage = "";
         String eloLibModul = "";        
         try {
@@ -791,22 +791,22 @@ class UnittestUtils {
         
     }
 
-    private static void CreateUnittestLib(String lib, SortedMap<String, List<String>> dicFunctions, String profileName, String libDir, String libixas) {
+    private static void CreateUnittestLib(String lib, SortedMap<String, List<String>> dicFunctions, String solutionName, String libDir, String libixas) {
         String jsScript = CreateUnittestLibDescribe(lib, dicFunctions, libixas);
-        SaveUnittestLib(lib, jsScript, profileName, libDir, libixas);
+        SaveUnittestLib(lib, jsScript, solutionName, libDir, libixas);
         
     }
     
-    private static void CreateUnittestLibs(SortedMap<String, SortedMap<String, List<String>>> dicLibs, String profileName, String libDir, String libixas) {
+    private static void CreateUnittestLibs(SortedMap<String, SortedMap<String, List<String>>> dicLibs, String solutionName, String libDir, String libixas) {
         // Debug(dicLibs, "dicLibs");
         dicLibs.entrySet().forEach((entryLib) -> {
-            CreateUnittestLib(entryLib.getKey(), entryLib.getValue(), profileName, libDir, libixas);
+            CreateUnittestLib(entryLib.getKey(), entryLib.getValue(), solutionName, libDir, libixas);
         });        
     }
 
-    static void CreateUnittest(IXConnection ixConn, Profile profile) {
-        List<EloPackage> eloPackages = profile.getEloPackages();
-        String profileName = profile.getName();
+    static void CreateUnittest(IXConnection ixConn, Solution solution) {
+        List<EloPackage> eloPackages = solution.getEloPackages();
+        String solutionName = solution.getName();
 
         SortedMap<String, SortedMap<String, List<String>>> dicAlls = new TreeMap<>();
         SortedMap<String, SortedMap<String, List<String>>> dicAllRhinos = new TreeMap<>();
@@ -831,10 +831,10 @@ class UnittestUtils {
                 dicELOasBases.putAll(dicELOasBase);                
             }                
         }
-        CreateUnittestLibs(dicAlls, profileName, "All", "lib");
-        CreateUnittestLibs(dicAllRhinos, profileName, "All Rhino", "lib");
-        CreateUnittestLibs(dicIndexServerScriptingBases, profileName, "IndexServer Scripting Base", "libix");
-        CreateUnittestLibs(dicELOasBases, profileName, "ELOas Base/OptionalJsLibs", "libas");
+        CreateUnittestLibs(dicAlls, solutionName, "All", "lib");
+        CreateUnittestLibs(dicAllRhinos, solutionName, "All Rhino", "lib");
+        CreateUnittestLibs(dicIndexServerScriptingBases, solutionName, "IndexServer Scripting Base", "libix");
+        CreateUnittestLibs(dicELOasBases, solutionName, "ELOas Base/OptionalJsLibs", "libas");
         
         Platform.runLater(() -> {
             EloTest.showAlert("Achtung!", "CreateUnittest", "Unittests created");
@@ -842,8 +842,8 @@ class UnittestUtils {
         
     }
 
-    static void ShowReportMatchUnittest(IXConnection ixConn, Profile profile) {
-        List<EloPackage> eloPackages = profile.getEloPackages();
+    static void ShowReportMatchUnittest(IXConnection ixConn, Solution solution) {
+        List<EloPackage> eloPackages = solution.getEloPackages();
         
         try {
             String[] jsTexts = RepoUtils.LoadTextDocs(ixConn, "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/_global/Unit Tests");   

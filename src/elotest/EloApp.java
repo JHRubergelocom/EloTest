@@ -47,7 +47,7 @@ class EloApp {
         return dicApp;
     }    
 
-    static void ShowUnittests(IXConnection ixConn, Profile profile, Profiles profiles) {
+    static void ShowUnittests(IXConnection ixConn, Solution solution, Solutions solutions) {
         String ticket = ixConn.getLoginResult().getClientInfo().getTicket();            
         String ixUrl = ixConn.getEndpointUrl();
         String appUrl = ixUrl.replaceAll("ix-", "wf-");
@@ -63,9 +63,9 @@ class EloApp {
         Http.OpenUrl(appUrl);                                  
     }    
 
-    static void ShowRancher(Profiles profiles) {
+    static void ShowRancher(Solutions solutions) {
         try {
-            String rancherUrl = "http://rancher.elo.local/env/1a81/apps/stacks?tags=" + profiles.getGitUser() + "&which=all";
+            String rancherUrl = "http://rancher.elo.local/env/1a81/apps/stacks?tags=" + solutions.getGitUser() + "&which=all";
             Http.OpenUrl(rancherUrl);                    
         } catch (Exception ex) {
             Platform.runLater(() -> {
