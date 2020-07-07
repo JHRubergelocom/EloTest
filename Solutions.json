@@ -80,7 +80,7 @@
     },
     {
       "name": "recruiting",
-      "eloPackages": [{"folder":"recruiting", "name":"recruiting"}, {"folder":"recruiting_jobportal", "name":"recruiting"}],
+      "eloPackages": [{"folder":"recruiting", "name":"recruiting"}, {"folder":"recruiting_jobportal", "name":"recruiting"}, {"folder":"recruiting_integration", "name":"recruiting"}],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00" }
