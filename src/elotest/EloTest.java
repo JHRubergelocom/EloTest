@@ -186,6 +186,7 @@ public class EloTest extends Application {
         entries.add("Admin Console");
         entries.add("App Manager");
         entries.add("Webclient");
+        entries.add("KnowledgeBoard");
         fillListView(lblEloServices, "Elo Services", listvEloServices, entries);
     }
 

@@ -227,6 +227,9 @@ class EloService extends Service<Boolean>{
             case "Webclient":
                 EloApp.StartWebclient(ixConn);
                 break;
+            case "KnowledgeBoard":
+                EloApp.ShowKnowledgeBoard(ixConn);
+                break;
             default:
                 Platform.runLater(() -> {
                     EloTest.showAlert("Not supported", "eloService", eloService);

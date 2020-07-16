@@ -1,8 +1,8 @@
 #EloProperties
-#Mon Jul 06 11:16:05 CEST 2020
+#Thu Jul 16 12:47:03 CEST 2020
 CaseSensitiv=true
-SelectedEloServices=Webclient
+SelectedEloServices=KnowledgeBoard
 Pattern=RF_
-SelectedSolution=invoice
+SelectedSolution=playground
 SelectedEloCli=eloPrepare
 SelectedUnittestTools=matching

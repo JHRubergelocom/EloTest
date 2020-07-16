@@ -1927,7 +1927,7 @@
                     var profileAvailable = new String(project.getProperty("profile.available"));
                     if (defined(profileAvailable)) {
                         var profileAttribute = new org.apache.tools.ant.taskdefs.Manifest.Attribute();
-                        profileAttribute.setName("Profile");
+                        profileAttribute.setName("Solution");
                         profileAttribute.setValue(new String(project.getProperty("javac.profile")));
                         man.addConfiguredAttribute(profileAttribute);
                     }
@@ -3767,7 +3767,7 @@
         <antcall target="clean"/>
     </target>
     
-    <target depends="-profile-check-1,-profile-pre72" description="Profile a project in the IDE." if="profiler.configured" name="jfx-project-profile" unless="profiler.info.jvmargs.agent">
+    <target depends="-profile-check-1,-profile-pre72" description="Solution a project in the IDE." if="profiler.configured" name="jfx-project-profile" unless="profiler.info.jvmargs.agent">
         <startprofiler/>
         <antcall target="jfxsa-run"/>
     </target>
@@ -3891,7 +3891,7 @@
     
     <target name="jfxws-profile" if="profiler.configured" 
         depends="-profile-check-1"
-        description="Profile JavaFX javaws project in IDE">
+        description="Solution JavaFX javaws project in IDE">
         <startprofiler/>
         <antcall target="-do-jfxws-profile"/>
     </target>
@@ -4034,7 +4034,7 @@
 
     <target name="jfxbe-profile" if="profiler.configured"
         depends="-profile-check-html"
-        description="Profile JavaFX project in browser">
+        description="Solution JavaFX project in browser">
         <startprofiler/>
         <antcall target="-do-jfxbe-profile"/>
     </target>
