@@ -5,9 +5,7 @@
  */
 package elotest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,12 +16,12 @@ import org.json.JSONObject;
  */
 public class Solution {
     private String name;
-    private List<EloPackage> eloPackages;
+    private Map<String, EloPackage> eloPackages;
     private Map<String, EloCommand> eloCommands;
 
     Solution(JSONObject obj) {
         name = "";
-        eloPackages = new ArrayList<>();
+        eloPackages = new HashMap<>();
         eloCommands = new HashMap<>();
         try {
             name = obj.getString("name");            
@@ -32,10 +30,10 @@ public class Solution {
         try {
             JSONObject[] jarrayEloPackages = JsonUtils.getArray(obj, "eloPackages");
             for(JSONObject objEloPackage: jarrayEloPackages){
-                eloPackages.add(new EloPackage(objEloPackage));
+                eloPackages.put(objEloPackage.getString("name"), new EloPackage(objEloPackage));                
             }
         } catch (JSONException ex) {  
-            eloPackages = new ArrayList<>();            
+            eloPackages = new HashMap<>();            
         }
         try {
             JSONObject[] jarrayEloCommands = JsonUtils.getArray(obj, "eloCommands");
@@ -51,7 +49,7 @@ public class Solution {
         return name;
     }
     
-    List<EloPackage> getEloPackages() {
+    Map<String, EloPackage> getEloPackages() {
         return eloPackages;
     }
 

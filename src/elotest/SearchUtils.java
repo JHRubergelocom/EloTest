@@ -120,7 +120,7 @@ class SearchUtils {
     }
 
     static void ShowSearchResult(IXConnection ixConn, Solution solution, EloTest eloTest) throws UnsupportedEncodingException {
-        List<EloPackage> eloPackages = solution.getEloPackages();
+        Map<String, EloPackage> eloPackages = solution.getEloPackages();
         String searchPattern = eloTest.getTxtPattern().getText();
         boolean caseSensitiv = eloTest.getChkCaseSensitiv().isSelected();
         Pattern pattern;

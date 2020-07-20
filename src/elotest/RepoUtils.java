@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
@@ -337,34 +338,34 @@ class RepoUtils {
         
     }
 
-    static SortedMap<SordDoc, SortedMap<Integer, String>> LoadSordDocLines(IXConnection ixConn, List<EloPackage> eloPackages, Pattern p) {   
+    static SortedMap<SordDoc, SortedMap<Integer, String>> LoadSordDocLines(IXConnection ixConn, Map<String, EloPackage> eloPackages, Pattern pattern) {   
         Comparator<SordDoc> byName = Comparator.comparing(sd -> sd.getName());
         Comparator<SordDoc> byId = Comparator.comparingInt(sd -> sd.getId());
         Comparator<SordDoc> bySordDoc = byName.thenComparing(byId);        
         SortedMap<SordDoc, SortedMap<Integer, String>> dicSordDocLines = new TreeMap<>(bySordDoc);         
-        String parentId;
         
-        if (p.toString().length() > 0) {
+        if (pattern.toString().length() > 0) {
             if (eloPackages.isEmpty()) {
+                String parentId;
                 parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions";
                 Sord[] sords = FindChildren(ixConn, parentId, true, true);
                 for (Sord s : sords) {
                     SordDoc sDoc = new SordDoc(s);
-                    SortedMap<Integer, String> docLines = DownloadDocumentToLines(ixConn, sDoc, p);
+                    SortedMap<Integer, String> docLines = DownloadDocumentToLines(ixConn, sDoc, pattern);
                     dicSordDocLines.put(sDoc, docLines);
                 }
             } else {
-                for (EloPackage eloPackage : eloPackages) {
+                eloPackages.forEach((n, p) -> {
                     SortedMap<SordDoc, SortedMap<Integer, String>> dicEloPackageSordDocLines = new TreeMap<>(bySordDoc); 
-                    parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + eloPackage.getFolder();
+                    final String parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + p.getFolder();
                     Sord[] sords = FindChildren(ixConn, parentId, true, true);
                     for (Sord s : sords) {
                         SordDoc sDoc = new SordDoc(s);
-                        SortedMap<Integer, String> docLines = DownloadDocumentToLines(ixConn, sDoc, p);
+                        SortedMap<Integer, String> docLines = DownloadDocumentToLines(ixConn, sDoc, pattern);
                         dicEloPackageSordDocLines.put(sDoc, docLines);
                         dicSordDocLines.putAll(dicEloPackageSordDocLines);
-                    }                
-                }            
+                    }                                    
+                }); 
             }            
         }
         

@@ -1,8 +1,8 @@
 #EloProperties
-#Thu Jul 16 12:47:03 CEST 2020
+#Mon Jul 20 10:21:47 CEST 2020
 CaseSensitiv=true
 SelectedEloServices=KnowledgeBoard
 Pattern=RF_
-SelectedSolution=playground
+SelectedSolution=common
 SelectedEloCli=eloPrepare
-SelectedUnittestTools=matching
+SelectedUnittestTools=export

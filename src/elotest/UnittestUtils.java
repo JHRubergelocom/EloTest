@@ -805,31 +805,37 @@ class UnittestUtils {
     }
 
     static void CreateUnittest(IXConnection ixConn, Solution solution) {
-        List<EloPackage> eloPackages = solution.getEloPackages();
+        Map<String, EloPackage> eloPackages = solution.getEloPackages();
         String solutionName = solution.getName();
 
-        SortedMap<String, SortedMap<String, List<String>>> dicAlls = new TreeMap<>();
-        SortedMap<String, SortedMap<String, List<String>>> dicAllRhinos = new TreeMap<>();
-        SortedMap<String, SortedMap<String, List<String>>> dicIndexServerScriptingBases = new TreeMap<>();
-        SortedMap<String, SortedMap<String, List<String>>> dicELOasBases = new TreeMap<>();
+        final SortedMap<String, SortedMap<String, List<String>>> dicAlls;
+        final SortedMap<String, SortedMap<String, List<String>>> dicAllRhinos;
+        final SortedMap<String, SortedMap<String, List<String>>> dicIndexServerScriptingBases;
+        final SortedMap<String, SortedMap<String, List<String>>> dicELOasBases;
         
         if (eloPackages.isEmpty()) {                
             dicAlls = GetLibs(ixConn, new EloPackage(), "All"); 
             dicAllRhinos = GetLibs(ixConn, new EloPackage(), "All Rhino"); 
             dicIndexServerScriptingBases = GetLibs(ixConn, new EloPackage(), "IndexServer Scripting Base"); 
             dicELOasBases = GetLibs(ixConn, new EloPackage(), "ELOas Base/OptionalJsLibs");             
-        } else {
-            for (EloPackage eloPackage : eloPackages) {
-                SortedMap<String, SortedMap<String, List<String>>> dicAll = GetLibs(ixConn, eloPackage, "All");    
-                SortedMap<String, SortedMap<String, List<String>>> dicAllRhino = GetLibs(ixConn, eloPackage, "All Rhino");    
-                SortedMap<String, SortedMap<String, List<String>>> dicIndexServerScriptingBase = GetLibs(ixConn, eloPackage, "IndexServer Scripting Base");    
-                SortedMap<String, SortedMap<String, List<String>>> dicELOasBase = GetLibs(ixConn, eloPackage, "ELOas Base/OptionalJsLibs");    
-                
+        } else { 
+            dicAlls = new TreeMap<>();
+            dicAllRhinos = new TreeMap<>();
+            dicIndexServerScriptingBases = new TreeMap<>();
+            dicELOasBases = new TreeMap<>();
+            
+            eloPackages.forEach((n, p) -> {
+                SortedMap<String, SortedMap<String, List<String>>> dicAll = GetLibs(ixConn, p, "All");    
+                SortedMap<String, SortedMap<String, List<String>>> dicAllRhino = GetLibs(ixConn, p, "All Rhino");    
+                SortedMap<String, SortedMap<String, List<String>>> dicIndexServerScriptingBase = GetLibs(ixConn, p, "IndexServer Scripting Base");    
+                SortedMap<String, SortedMap<String, List<String>>> dicELOasBase = GetLibs(ixConn, p, "ELOas Base/OptionalJsLibs");    
+
                 dicAlls.putAll(dicAll);
                 dicAllRhinos.putAll(dicAllRhino);
                 dicIndexServerScriptingBases.putAll(dicIndexServerScriptingBase);                
-                dicELOasBases.putAll(dicELOasBase);                
-            }                
+                dicELOasBases.putAll(dicELOasBase);                                 
+            }); 
+            
         }
         CreateUnittestLibs(dicAlls, solutionName, "All", "lib");
         CreateUnittestLibs(dicAllRhinos, solutionName, "All Rhino", "lib");
@@ -843,19 +849,19 @@ class UnittestUtils {
     }
 
     static void ShowReportMatchUnittest(IXConnection ixConn, Solution solution) {
-        List<EloPackage> eloPackages = solution.getEloPackages();
+        Map<String, EloPackage> eloPackages = solution.getEloPackages();
         
         try {
             String[] jsTexts = RepoUtils.LoadTextDocs(ixConn, "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/_global/Unit Tests");   
             SortedMap<String, List<String>> jsTextsSortedMap = RepoUtils.LoadTextDocsToSortedMap(ixConn, "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/_global/Unit Tests");   
             
-            SortedMap<String, Boolean> dicRFs = new TreeMap<>();
-            SortedMap<String, Boolean> dicASDirectRules = new TreeMap<>();
-            SortedMap<String, Boolean> dicActionDefs = new TreeMap<>();
-            SortedMap<String, SortedMap<String, Boolean>> dicLibAlls = new TreeMap<>();
-            SortedMap<String, SortedMap<String, Boolean>> dicLibRhinos = new TreeMap<>();
-            SortedMap<String, SortedMap<String, Boolean>> dicLibIndexServerScriptingBases = new TreeMap<>();
-            SortedMap<String, SortedMap<String, Boolean>> dicLibELOasBases = new TreeMap<>();            
+            final SortedMap<String, Boolean> dicRFs;
+            final SortedMap<String, Boolean> dicASDirectRules;
+            final SortedMap<String, Boolean> dicActionDefs;
+            final SortedMap<String, SortedMap<String, Boolean>> dicLibAlls;
+            final SortedMap<String, SortedMap<String, Boolean>> dicLibRhinos;
+            final SortedMap<String, SortedMap<String, Boolean>> dicLibIndexServerScriptingBases;
+            final SortedMap<String, SortedMap<String, Boolean>> dicLibELOasBases;            
             
             if (eloPackages.isEmpty()) {                
                 dicRFs = GetRFs(ixConn, jsTexts, new EloPackage()); 
@@ -866,22 +872,31 @@ class UnittestUtils {
                 dicLibIndexServerScriptingBases = GetLibsMatch(ixConn, jsTextsSortedMap, new EloPackage(), "IndexServer Scripting Base"); 
                 dicLibELOasBases = GetLibsMatch(ixConn, jsTextsSortedMap, new EloPackage(), "ELOas Base/OptionalJsLibs"); 
             } else {
-                for (EloPackage eloPackage : eloPackages) {
-                    SortedMap<String, Boolean> dicRF = GetRFs(ixConn, jsTexts, eloPackage);        
-                    SortedMap<String, Boolean> dicASDirectRule = GetRules(ixConn, jsTexts, eloPackage);
-                    SortedMap<String, Boolean> dicActionDef = GetActionDefs(ixConn, jsTexts, eloPackage);
-                    SortedMap<String, SortedMap<String, Boolean>> dicLibAll = GetLibsMatch(ixConn, jsTextsSortedMap, eloPackage, "All");
-                    SortedMap<String, SortedMap<String, Boolean>> dicLibRhino = GetLibsMatch(ixConn, jsTextsSortedMap, eloPackage, "All Rhino");
-                    SortedMap<String, SortedMap<String, Boolean>> dicLibIndexServerScriptingBase = GetLibsMatch(ixConn, jsTextsSortedMap, eloPackage, "IndexServer Scripting Base");
-                    SortedMap<String, SortedMap<String, Boolean>> dicLibELOasBase = GetLibsMatch(ixConn, jsTextsSortedMap, eloPackage, "ELOas Base/OptionalJsLibs");                                
+                dicRFs = new TreeMap<>();
+                dicASDirectRules = new TreeMap<>();
+                dicActionDefs = new TreeMap<>();
+                dicLibAlls = new TreeMap<>();
+                dicLibRhinos = new TreeMap<>();
+                dicLibIndexServerScriptingBases = new TreeMap<>();
+                dicLibELOasBases = new TreeMap<>();
+                
+                eloPackages.forEach((n, p) -> {
+                    SortedMap<String, Boolean> dicRF = GetRFs(ixConn, jsTexts, p);        
+                    SortedMap<String, Boolean> dicASDirectRule = GetRules(ixConn, jsTexts, p);
+                    SortedMap<String, Boolean> dicActionDef = GetActionDefs(ixConn, jsTexts, p);
+                    SortedMap<String, SortedMap<String, Boolean>> dicLibAll = GetLibsMatch(ixConn, jsTextsSortedMap, p, "All");
+                    SortedMap<String, SortedMap<String, Boolean>> dicLibRhino = GetLibsMatch(ixConn, jsTextsSortedMap, p, "All Rhino");
+                    SortedMap<String, SortedMap<String, Boolean>> dicLibIndexServerScriptingBase = GetLibsMatch(ixConn, jsTextsSortedMap, p, "IndexServer Scripting Base");
+                    SortedMap<String, SortedMap<String, Boolean>> dicLibELOasBase = GetLibsMatch(ixConn, jsTextsSortedMap, p, "ELOas Base/OptionalJsLibs");   
+                    
                     dicRFs.putAll(dicRF);
                     dicASDirectRules.putAll(dicASDirectRule);
                     dicActionDefs.putAll(dicActionDef);
                     dicLibAlls.putAll(dicLibAll);
                     dicLibRhinos.putAll(dicLibRhino);
                     dicLibIndexServerScriptingBases.putAll(dicLibIndexServerScriptingBase);
-                    dicLibELOasBases.putAll(dicLibELOasBase);                    
-                }                
+                    dicLibELOasBases.putAll(dicLibELOasBase);                                        
+                });
             }
             String htmlDoc = CreateReportMatchUnittest(dicRFs, dicASDirectRules, dicActionDefs, dicLibAlls, dicLibRhinos, dicLibIndexServerScriptingBases, dicLibELOasBases);
             Http.ShowReport(htmlDoc);
