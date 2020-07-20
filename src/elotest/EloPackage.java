@@ -5,6 +5,8 @@
  */
 package elotest;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,33 +17,36 @@ import org.json.JSONObject;
 class EloPackage {
 
     private String name;
-    private String folder;
+    private Map<String, String> folders;
     
     EloPackage(JSONObject obj) {
         name = "";
-        folder = "";
+        folders = new HashMap<>();
         
         try {
             name = obj.getString("name");            
         } catch (JSONException ex) {            
         }
         try {
-            folder = obj.getString("folder");      
-        } catch (JSONException ex) {            
+            String[] jarrayfolders = JsonUtils.getStringArray(obj, "folders");
+            for(String folder: jarrayfolders){
+                folders.put(folder, folder);
+            }
+        } catch (JSONException ex) { 
+            folders = new HashMap<>();
         }
     }    
     EloPackage() {
         name = "";
-        folder = "";
+        folders = new HashMap<>();
     }
     
     public String getName() {
         return name;
     }
     
-    public String getFolder() {
-        return folder;
+    public Map<String, String> getFolders() {
+        return folders;
     }
-    
-    
+        
 }

@@ -334,8 +334,7 @@ class RepoUtils {
             }            
         } catch (RemoteException ex) {
         }
-        return docLines;
-        
+        return docLines;        
     }
 
     static SortedMap<SordDoc, SortedMap<Integer, String>> LoadSordDocLines(IXConnection ixConn, Map<String, EloPackage> eloPackages, Pattern pattern) {   
@@ -357,20 +356,21 @@ class RepoUtils {
             } else {
                 eloPackages.forEach((n, p) -> {
                     SortedMap<SordDoc, SortedMap<Integer, String>> dicEloPackageSordDocLines = new TreeMap<>(bySordDoc); 
-                    final String parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + p.getFolder();
-                    Sord[] sords = FindChildren(ixConn, parentId, true, true);
-                    for (Sord s : sords) {
-                        SordDoc sDoc = new SordDoc(s);
-                        SortedMap<Integer, String> docLines = DownloadDocumentToLines(ixConn, sDoc, pattern);
-                        dicEloPackageSordDocLines.put(sDoc, docLines);
-                        dicSordDocLines.putAll(dicEloPackageSordDocLines);
-                    }                                    
+                    Map<String, String> folders = p.getFolders();
+                    folders.forEach((k, v) -> {
+                        final String parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + v;
+                        Sord[] sords = FindChildren(ixConn, parentId, true, true);
+                        for (Sord s : sords) {
+                            SordDoc sDoc = new SordDoc(s);
+                            SortedMap<Integer, String> docLines = DownloadDocumentToLines(ixConn, sDoc, pattern);
+                            dicEloPackageSordDocLines.put(sDoc, docLines);
+                            dicSordDocLines.putAll(dicEloPackageSordDocLines);
+                        }     
+                    });
                 }); 
             }            
-        }
-        
-        return dicSordDocLines;        
-        
+        }        
+        return dicSordDocLines;                
     }
 
 }

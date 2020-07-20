@@ -3,13 +3,13 @@
     {
       "name": "common",
       "eloPackages": [
-        {"folder":"common", "name":"common"},
-        {"folder":"common_document", "name":"common_document"},
-        {"folder":"common_fx", "name":"common_fx"},
-        {"folder":"common_monitoring", "name":"common_monitoring"},
-        {"folder":"common_signature", "name":"common_sig"},
-        {"folder":"connector_xml", "name":"connector_xml"},
-        {"folder":"development", "name":"dev"}
+        {"name": "common", "folders": ["common"]},
+        {"name": "common_document", "folders": ["common_document"]},
+        {"name": "common_fx", "folders": ["common_fx"]},
+        {"name": "common_monitoring", "folders": ["common_monitoring"]},
+        {"name": "common_sig", "folders": ["common_signature"]},
+        {"name": "connector_xml", "folders": ["connector_xml"]},
+        {"name": "dev", "folders": ["development"]}
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
@@ -18,7 +18,9 @@
     },
     {
       "name": "contract",
-      "eloPackages": [{"folder":"contract", "name":"contract"}],
+      "eloPackages": [
+        {"name": "contract", "folders": ["contract"]}
+      ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00" }
@@ -26,7 +28,9 @@
     },
     {
       "name": "hr",
-      "eloPackages": [{"folder":"hr", "name":"hr"}, {"folder":"hr_orgchart", "name":"hr"}],
+      "eloPackages": [
+        {"name": "hr", "folders": ["hr", "hr_orgchart"]}
+      ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00"}
@@ -34,7 +38,10 @@
     },
     {
       "name": "invoice",
-      "eloPackages": [{"folder":"invoice", "name":"invoice"}, {"folder":"invoice_datev", "name":"invoice"}, {"folder":"invoice_electronic", "name":"invoice"}, {"folder":"connector_dx", "name":"connector_dx"}],
+      "eloPackages": [
+        {"name": "invoice", "folders": ["invoice", "invoice_datev", "invoice_electronic"]}, 
+        {"name": "connector_dx", "folders": ["connector_dx"]}
+      ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"12.00"}
@@ -42,7 +49,9 @@
     },
     {
       "name": "knowledge",
-      "eloPackages": [{"folder":"knowledge", "name":"knowledge"}],
+      "eloPackages": [
+        {"name": "knowledge", "folders": ["knowledge"]}
+      ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPullPackage", "cmd": "elo pull", "workspace": "knowledge-only" },
@@ -51,7 +60,9 @@
     },
     {
       "name": "learning",
-      "eloPackages": [{"folder":"learning", "name":"learning"}, {"folder":"learning_gotowebinar", "name":"learning"}],
+      "eloPackages": [
+        {"name": "learning", "folders": ["learning", "learning_gotowebinar"]}
+      ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "default", "version":"12.00" }
@@ -63,7 +74,13 @@
     },
     {
       "name": "productivity",
-      "eloPackages": [{"folder":"account", "name":"account"}, {"folder":"checklist", "name":"checklist"}, {"folder":"contact", "name":"contact"}, {"folder":"notify", "name":"notify"}, {"folder":"privacy", "name":"privacy"}],
+      "eloPackages": [
+        {"name": "account", "folders": ["account"]}, 
+        {"name": "checklist", "folders": ["checklist"]}, 
+        {"name": "contact", "folders": ["contact"]}, 
+        {"name": "notify", "folders": ["notify"]}, 
+        {"name": "privacy", "folders": ["privacy"]}
+      ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPullPackage", "cmd": "elo pull", "workspace": "notify-only" },
@@ -72,7 +89,9 @@
     },
     {
       "name": "pubsec",
-      "eloPackages": [{"folder":"pubsec", "name":"pubsec"}, {"folder":"pubsec_process", "name":"pubsec"}],
+      "eloPackages": [
+        {"name": "pubsec", "folders": ["pubsec", "pubsec_process"]} 
+      ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00" }
@@ -80,7 +99,9 @@
     },
     {
       "name": "recruiting",
-      "eloPackages": [{"folder":"recruiting", "name":"recruiting"}, {"folder":"recruiting_jobportal", "name":"recruiting"}, {"folder":"recruiting_integration", "name":"recruiting"}],
+      "eloPackages": [
+        {"name": "recruiting", "folders": ["recruiting", "recruiting_jobportal", "recruiting_integration"]} 
+      ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00" }
@@ -88,7 +109,9 @@
     },
     {
       "name": "visitor",
-      "eloPackages": [{"folder":"visitor", "name":"visitor"}],
+      "eloPackages": [
+        {"name": "visitor", "folders": ["visitor"]}
+      ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00" }

@@ -41,91 +41,106 @@ class UnittestUtils {
         return false;                
     }
     
-    private static SortedMap<String, Boolean> GetRFs(IXConnection ixConn, String[] jsTexts, EloPackage eloPackage) {
-        String parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + eloPackage.getFolder() + "/IndexServer Scripting Base";
-        if (eloPackage.getFolder().equals("")) {
-            parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/IndexServer Scripting Base/_ALL/business_solutions";
-        }
-        Sord[] sordRFInfo = RepoUtils.FindChildren(ixConn, parentId, true, true);
+    private static SortedMap<String, Boolean> GetRFs(IXConnection ixConn, String[] jsTexts, EloPackage eloPackage) {        
+        List<String> parentIds =  new ArrayList<>();
+        Map<String, String> folders = eloPackage.getFolders();
+        folders.forEach((k, v) -> {
+            parentIds.add("ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + v + "/IndexServer Scripting Base");
+        });
+        if (folders.isEmpty()) {
+            parentIds.add("ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/IndexServer Scripting Base/_ALL/business_solutions");
+        }            
         SortedMap<String, Boolean> dicRFs = new TreeMap<>();
-        
-        for(Sord s : sordRFInfo) {  
-           String jsText = RepoUtils.DownloadDocumentToString (ixConn, s);  
-           jsText = jsText.replaceAll("\b", "");
-           jsText = jsText.replaceAll("\n", " ");
-           String[] jsLines = jsText.split(" ");
-            for (String line : jsLines) {
-                if (line.contains("RF_")) {
-                    if (eloPackage.getName().equals("") || (!eloPackage.getName().equals("") && line.contains(eloPackage.getName()))) {
-                        String rfName = line;
-                        String[] rfNames = rfName.split("\\(");
-                        rfName = rfNames[0];
-                        if (!line.endsWith(",")
-                                && rfName.startsWith("RF_") && !line.contains("RF_ServiceBaseName") && !line.endsWith(".")
-                                && !line.contains("RF_FunctionName") && !line.contains("RF_MyFunction")
-                                && !line.contains("RF_custom_functions_MyFunction") && !line.contains("RF_custom_services_MyFunction")
-                                && !line.contains("RF_sol_function_FeedComment}.") && !line.contains("RF_sol_my_actions_MyAction")
-                                && !line.contains("RF_sol_service_ScriptVersionReportCreate")) {
-                            if (!dicRFs.containsKey(rfName)) {
-                                boolean match = Match(rfName, eloPackage, jsTexts);
-                                dicRFs.put(rfName, match);
-                            }
-                        }                        
-                    }
-                }                    
-            }
-           
-        }                
+        parentIds.forEach((parentId) -> {            
+            Sord[] sordRFInfo = RepoUtils.FindChildren(ixConn, parentId, true, true);
+            for(Sord s : sordRFInfo) {  
+               String jsText = RepoUtils.DownloadDocumentToString (ixConn, s);  
+               jsText = jsText.replaceAll("\b", "");
+               jsText = jsText.replaceAll("\n", " ");
+               String[] jsLines = jsText.split(" ");
+                for (String line : jsLines) {
+                    if (line.contains("RF_")) {
+                        if (eloPackage.getName().equals("") || (!eloPackage.getName().equals("") && line.contains(eloPackage.getName()))) {
+                            String rfName = line;
+                            String[] rfNames = rfName.split("\\(");
+                            rfName = rfNames[0];
+                            if (!line.endsWith(",")
+                                    && rfName.startsWith("RF_") && !line.contains("RF_ServiceBaseName") && !line.endsWith(".")
+                                    && !line.contains("RF_FunctionName") && !line.contains("RF_MyFunction")
+                                    && !line.contains("RF_custom_functions_MyFunction") && !line.contains("RF_custom_services_MyFunction")
+                                    && !line.contains("RF_sol_function_FeedComment}.") && !line.contains("RF_sol_my_actions_MyAction")
+                                    && !line.contains("RF_sol_service_ScriptVersionReportCreate")) {
+                                if (!dicRFs.containsKey(rfName)) {
+                                    boolean match = Match(rfName, eloPackage, jsTexts);
+                                    dicRFs.put(rfName, match);
+                                }
+                            }                        
+                        }
+                    }                    
+                }
+            }         
+        });
         return dicRFs;
     }
     
     private static SortedMap<String, Boolean> GetRules(IXConnection ixConn, String[] jsTexts, EloPackage eloPackage) {
-        String parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + eloPackage.getFolder() + "/ELOas Base/Direct";
-        if (eloPackage.getFolder().equals("")) {
-            parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/ELOas Base/Direct";
-        }
-        Sord[] sordRuleInfo = RepoUtils.FindChildren(ixConn, parentId, true, true);
+        List<String> parentIds =  new ArrayList<>();
+        Map<String, String> folders = eloPackage.getFolders();
+        folders.forEach((k, v) -> {
+            parentIds.add("ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + v + "/ELOas Base/Direct");
+        });
+        if (folders.isEmpty()) {
+            parentIds.add("ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/ELOas Base/Direct");
+        }    
+        
         SortedMap<String, Boolean> dicRules = new TreeMap<>();
-        for(Sord s : sordRuleInfo) {            
-            try {
-                String xmlText = RepoUtils.DownloadDocumentToString (ixConn, s);             
-                XPathFactory xpathFactory = XPathFactory.newInstance();
-                XPath xpath = xpathFactory.newXPath();
-                InputSource source = new InputSource(new StringReader(xmlText));            
-                String rulesetname = xpath.evaluate("ruleset/base/name", source);
-                if (!dicRules.containsKey(rulesetname)) {
-                    boolean match = Match(rulesetname, eloPackage, jsTexts);
-                    dicRules.put(rulesetname, match);
+        parentIds.forEach((parentId) -> {
+            Sord[] sordRuleInfo = RepoUtils.FindChildren(ixConn, parentId, true, true);
+            for(Sord s : sordRuleInfo) {            
+                try {
+                    String xmlText = RepoUtils.DownloadDocumentToString (ixConn, s);             
+                    XPathFactory xpathFactory = XPathFactory.newInstance();
+                    XPath xpath = xpathFactory.newXPath();
+                    InputSource source = new InputSource(new StringReader(xmlText));            
+                    String rulesetname = xpath.evaluate("ruleset/base/name", source);
+                    if (!dicRules.containsKey(rulesetname)) {
+                        boolean match = Match(rulesetname, eloPackage, jsTexts);
+                        dicRules.put(rulesetname, match);
+                    }
+                } catch (XPathExpressionException ex) {
+                    System.err.println("XPathExpressionException: " +  ex.getMessage()); 
                 }
-            } catch (XPathExpressionException ex) {
-                System.err.println("XPathExpressionException: " +  ex.getMessage()); 
-            }
-        }
+            }        
+        });            
         return dicRules;        
     }
 
     private static SortedMap<String, Boolean> GetActionDefs(IXConnection ixConn, String[] jsTexts, EloPackage eloPackage) {
-        String parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + eloPackage.getFolder() + "/Action definitions";
-        if (eloPackage.getFolder().equals("")) {
-            parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/_global/Action definitions";
-        }
-
-        Sord[] sordActionDefInfo = RepoUtils.FindChildren(ixConn, parentId, true, true);
-        SortedMap <String, Boolean> dicActionDefs = new TreeMap<>();
-        
-        for(Sord s : sordActionDefInfo) {
-            String actionDef = s.getName();
-            String[] rf = actionDef.split("\\.");
-            actionDef = rf[rf.length-1];
-            actionDef = "actions." + actionDef;
-            if (!dicActionDefs.containsKey(actionDef)) {
-                boolean match = Match(actionDef, eloPackage, jsTexts);
-                if(eloPackage.getName().equals("privacy") || eloPackage.getName().equals("pubsec")) {
-                    match = true;
-                }                
-                dicActionDefs.put(actionDef, match);
-            }
-        }
+        List<String> parentIds =  new ArrayList<>();
+        Map<String, String> folders = eloPackage.getFolders();
+        folders.forEach((k, v) -> {
+            parentIds.add("ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + v + "/Action definitions");
+        });
+        if (folders.isEmpty()) {
+            parentIds.add("ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/_global/Action definitions");
+        }            
+        SortedMap <String, Boolean> dicActionDefs = new TreeMap<>();        
+        parentIds.forEach((parentId) -> {
+            Sord[] sordActionDefInfo = RepoUtils.FindChildren(ixConn, parentId, true, true);
+            for(Sord s : sordActionDefInfo) {
+                String actionDef = s.getName();
+                String[] rf = actionDef.split("\\.");
+                actionDef = rf[rf.length-1];
+                actionDef = "actions." + actionDef;
+                if (!dicActionDefs.containsKey(actionDef)) {
+                    boolean match = Match(actionDef, eloPackage, jsTexts);
+                    if(eloPackage.getName().equals("privacy") || eloPackage.getName().equals("pubsec")) {
+                        match = true;
+                    }                
+                    dicActionDefs.put(actionDef, match);
+                }
+            }        
+        });
         return dicActionDefs;        
     }
 
@@ -193,45 +208,52 @@ class UnittestUtils {
     }
 
     private static SortedMap<String, SortedMap<String, List<String>>> GetLibs(IXConnection ixConn, EloPackage eloPackage, String libDir) {
-        if (eloPackage.getFolder().equals("")) {
-            return new TreeMap<>();        
-        }        
-        String parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + eloPackage.getFolder() + "/" + libDir;
-        Sord[] sordRFInfo = RepoUtils.FindChildren(ixConn, parentId, true, false);
-        SortedMap<String, SortedMap<String, List<String>>> dicLibs = new TreeMap<>();        
-        for(Sord s : sordRFInfo) {  
-           String libName = ""; 
-           List<String> jsLines = RepoUtils.DownloadDocumentToList (ixConn, s);  
-            for (String line : jsLines) {
-                if (line.contains("sol.define(")) {
-                    libName = line;                    
-                    if (libName.split("\"").length > 1) {
-                        libName = libName.split("\"")[1].trim();                    
-                        if (!dicLibs.containsKey(libName)) {
-                            dicLibs.put(libName, new TreeMap<>());
-                        }                        
+        List<String> parentIds =  new ArrayList<>();
+        Map<String, String> folders = eloPackage.getFolders();
+        folders.forEach((k, v) -> {
+            parentIds.add("ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + v + "/" + libDir);
+        });
+        if (folders.isEmpty()) {
+            return new TreeMap<>();
+        }    
+        SortedMap<String, SortedMap<String, List<String>>> dicLibs = new TreeMap<>();                
+        parentIds.forEach((parentId) -> {        
+            Sord[] sordRFInfo = RepoUtils.FindChildren(ixConn, parentId, true, false);
+            for(Sord s : sordRFInfo) {  
+               String libName = ""; 
+               List<String> jsLines = RepoUtils.DownloadDocumentToList (ixConn, s);  
+                for (String line : jsLines) {
+                    if (line.contains("sol.define(")) {
+                        libName = line;                    
+                        if (libName.split("\"").length > 1) {
+                            libName = libName.split("\"")[1].trim();                    
+                            if (!dicLibs.containsKey(libName)) {
+                                dicLibs.put(libName, new TreeMap<>());
+                            }                        
+                        }
                     }
-                }
-                if (dicLibs.containsKey(libName)) {
-                    if (line.contains("function") && line.contains(":") && line.contains("(") && line.contains(")")&& !line.contains("*")){
-                        String fName = line;
-                        if (fName.split(":").length > 0) {
-                            fName = fName.split(":")[0].trim();
-                            List<String> params = new ArrayList<>();                            
-                            String pNames = line;
-                            pNames = pNames.trim();
-                            pNames = pNames.split("\\(")[1];
-                            pNames = pNames.split("\\)")[0];
-                            String [] ps = pNames.split(",");
-                            for (String p: ps) {
-                                params.add(p.trim());
-                            } 
-                            dicLibs.get(libName).put(fName, params);                            
-                        }                        
-                    }                       
-                }                
-            }           
-        }                
+                    if (dicLibs.containsKey(libName)) {
+                        if (line.contains("function") && line.contains(":") && line.contains("(") && line.contains(")")&& !line.contains("*")){
+                            String fName = line;
+                            if (fName.split(":").length > 0) {
+                                fName = fName.split(":")[0].trim();
+                                List<String> params = new ArrayList<>();                            
+                                String pNames = line;
+                                pNames = pNames.trim();
+                                pNames = pNames.split("\\(")[1];
+                                pNames = pNames.split("\\)")[0];
+                                String [] ps = pNames.split(",");
+                                for (String p: ps) {
+                                    params.add(p.trim());
+                                } 
+                                dicLibs.get(libName).put(fName, params);                            
+                            }                        
+                        }                       
+                    }                
+                }           
+            }                
+        
+        });
         return dicLibs;        
     }
     
