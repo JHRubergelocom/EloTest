@@ -68,11 +68,11 @@ class EloProperties  extends Properties {
     }
 
     String getSelectedSolution() {
-        return getProperty("SelectedSolution");        
+        return getProperty("SelectedSolution", "");        
     }
     
     String getSelectedEloCli() {
-        return getProperty("SelectedEloCli");        
+        return getProperty("SelectedEloCli", "");        
     }    
     
     void setSelectedEloCli(String name) {
@@ -81,7 +81,7 @@ class EloProperties  extends Properties {
     }
     
     String getSelectedUnittestTools() {
-        return getProperty("SelectedUnittestTools"); 
+        return getProperty("SelectedUnittestTools", ""); 
     }
 
     void setSelectedUnittestTools(String name) {
@@ -90,7 +90,7 @@ class EloProperties  extends Properties {
     }   
     
     String getSelectedEloServices() {
-        return getProperty("SelectedEloServices"); 
+        return getProperty("SelectedEloServices", ""); 
     }
 
     void setSelectedEloServices(String name) {
@@ -104,7 +104,7 @@ class EloProperties  extends Properties {
         saveProperties();
     }
     String getPattern() {
-        return getProperty("Pattern");        
+        return getProperty("Pattern", "");        
     }
 
     void setCaseSensitiv(boolean caseSensitiv) {

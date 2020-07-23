@@ -136,7 +136,7 @@ class EloService extends Service<Boolean>{
                     pgProgress = pgProgress + pgIncrement;
                     setProgress(pgProgress, line, "");
                 }                                
-                if (line.contains("already exists")) {
+                if (line.contains("already exists") || line.contains("is on branch")){
                     break;
                 }
             }
@@ -145,7 +145,7 @@ class EloService extends Service<Boolean>{
             setProgress(pgProgress, "Ready!", "");
             
             if (line != null) {
-                if (line.contains("already exists")) {
+                if (line.contains("already exists") || line.contains("is on branch")) {
                     try (OutputStream os = p.getOutputStream()) {
                         OutputStreamWriter osr = new OutputStreamWriter(os);
                         BufferedWriter bw = new BufferedWriter(osr);

@@ -13,7 +13,7 @@
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"12.00" }
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }
       ]
     },
     {
@@ -70,6 +70,29 @@
     },
     {
       "name": "playground",
+      "eloPackages": [
+        {"name": "common", "folders": ["common"]},
+        {"name": "common_document", "folders": ["common_document"]},
+        {"name": "common_fx", "folders": ["common_fx"]},
+        {"name": "common_monitoring", "folders": ["common_monitoring"]},
+        {"name": "common_sig", "folders": ["common_signature"]},
+        {"name": "connector_xml", "folders": ["connector_xml"]},
+        {"name": "dev", "folders": ["development"]},
+        {"name": "contract", "folders": ["contract"]},
+        {"name": "hr", "folders": ["hr", "hr_orgchart"]},
+        {"name": "invoice", "folders": ["invoice", "invoice_datev", "invoice_electronic"]}, 
+        {"name": "connector_dx", "folders": ["connector_dx"]},
+        {"name": "knowledge", "folders": ["knowledge"]},
+        {"name": "learning", "folders": ["learning", "learning_gotowebinar"]},
+        {"name": "account", "folders": ["account"]}, 
+        {"name": "checklist", "folders": ["checklist"]}, 
+        {"name": "contact", "folders": ["contact"]}, 
+        {"name": "notify", "folders": ["notify"]}, 
+        {"name": "privacy", "folders": ["privacy"]},
+        {"name": "pubsec", "folders": ["pubsec", "pubsec_process"]}, 
+        {"name": "recruiting", "folders": ["recruiting", "recruiting_jobportal", "recruiting_integration"]}, 
+        {"name": "visitor", "folders": ["visitor"]}
+      ],
       "eloCommands": []
     },
     {
