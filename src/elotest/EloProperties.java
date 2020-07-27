@@ -62,13 +62,13 @@ class EloProperties  extends Properties {
         }           
     }
 
-    void setSelectedSolution(String name) {
-        setProperty("SelectedSolution", name);   
+    void setSelectedStack(String name) {
+        setProperty("SelectedStack", name);   
         saveProperties();
     }
 
-    String getSelectedSolution() {
-        return getProperty("SelectedSolution", "");        
+    String getSelectedStack() {
+        return getProperty("SelectedStack", "");        
     }
     
     String getSelectedEloCli() {

@@ -14,20 +14,20 @@ import de.elo.ix.client.IXConnection;
  * @author ruberg
  */
 class Connection {
-    static IXConnection getIxConnection(Solution solution, Solutions solutions) throws Exception{
+    static IXConnection getIxConnection(Stack stack, Stacks stacks) throws Exception{
         IXConnection ixConn;
         IXConnFactory connFact;        
         try {
-            connFact = new IXConnFactory(solution.getIxUrl(solutions.getGitUser()), "IXConnection", "1.0");            
+            connFact = new IXConnFactory(stack.getIxUrl(), "IXConnection", "1.0");            
         } catch (Exception ex) {
             EloTest.showAlert("Achtung!", "ELO Connection", "Falsche Verbindungsdaten zu ELO \n: " + ex.getMessage());            
             System.out.println("IllegalStateException message: " +  ex.getMessage());            
             throw new Exception("Connection");
         }
         try {
-            ixConn = connFact.create(solutions.getUser(), solutions.getPwd(), null, null);
+            ixConn = connFact.create(stacks.getUser(), stacks.getPwd(), null, null);
         } catch (RemoteException ex) {
-            EloTest.showAlert("Achtung!", "ELO Connection", "Indexserver-Verbindung ungültig \n User: " + solutions.getUser() + "\n IxUrl: " + solution.getIxUrl(solutions.getGitUser()));                        
+            EloTest.showAlert("Achtung!", "ELO Connection", "Indexserver-Verbindung ungültig \n User: " + stacks.getUser() + "\n IxUrl: " + stack.getIxUrl());                        
             System.out.println("RemoteException message: " + ex.getMessage()); 
             throw new Exception("Connection");
         }

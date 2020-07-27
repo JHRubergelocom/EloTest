@@ -38,12 +38,12 @@ public class EloTest extends Application {
     static final String LISTVIEW_STYLE = "-fx-font-style: regular; -fx-font-size: 14px";
     static final String TEXTFIELD_STYLE = "-fx-font-style: regular; -fx-font-size: 12px";
     
-    private final Solutions solutions = new Solutions("Solutions.json");
+    private final Stacks stacks = new Stacks("Stacks.json");
     private final EloProperties eloProperties = new EloProperties();
     private final EloService eloService = new EloService();
     
-    private final Label lblSolution = new Label(); 
-    private final ComboBox<String> cmbSolution = new ComboBox<>(); 
+    private final Label lblStack = new Label(); 
+    private final ComboBox<String> cmbStack = new ComboBox<>(); 
     
     private final Label lblEloCli = new Label(); 
     private final ListView<String> listvEloCli = new ListView<>(); 
@@ -78,37 +78,37 @@ public class EloTest extends Application {
         combobox.setStyle(LISTVIEW_STYLE);       
    }
     
-    private void fillComboBoxSolution() {
+    private void fillComboBoxStack() {
         final ArrayList<String> entries = new ArrayList<>();
         
-        solutions.getSolutions().forEach((n, p) -> {
-            entries.add(p.getName());
+        stacks.getStacks().forEach((n, s) -> {
+            entries.add(s.getStack());
         }); 
         
-        fillComboBox(lblSolution, "Solution", cmbSolution, entries);        
+        fillComboBox(lblStack, "Stack", cmbStack, entries);        
     }
     
-    private void initComboBoxSolution() {
-        fillComboBoxSolution();        
-        String selectedSolutionName = eloProperties.getSelectedSolution();
-        if (selectedSolutionName != null) {
-            cmbSolution.getSelectionModel().select(selectedSolutionName);            
+    private void initComboBoxStack() {
+        fillComboBoxStack();        
+        String selectedStackName = eloProperties.getSelectedStack();
+        if (selectedStackName != null) {
+            cmbStack.getSelectionModel().select(selectedStackName);            
         } else {
-            cmbSolution.getSelectionModel().select(0);                    
+            cmbStack.getSelectionModel().select(0);                    
         }
         
-        cmbSolution.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+        cmbStack.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             System.out.println("Selected item: " + newValue);
-            eloProperties.setSelectedSolution(newValue);
+            eloProperties.setSelectedStack(newValue);
             fillListViewEloCli();
         });        
     }
   
     private void fillListViewEloCli() {
-        String pname = cmbSolution.getSelectionModel().getSelectedItem();
+        String sname = cmbStack.getSelectionModel().getSelectedItem();
                 
         final ArrayList<String> entries = new ArrayList<>();        
-        Solution p = solutions.getSolutions().get(pname);
+        Stack p = stacks.getStacks().get(sname);
         
         p.getEloCommands().forEach((n, c) -> {
             entries.add(c.getName());
@@ -129,10 +129,10 @@ public class EloTest extends Application {
         listvEloCli.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 String currentItemSelected = listvEloCli.getSelectionModel().getSelectedItem();
-                String pname = cmbSolution.getSelectionModel().getSelectedItem();
-                Solution solution = solutions.getSolutions().get(pname);
-                EloCommand eloCommand = solution.getEloCommands().get(currentItemSelected);
-                eloService.runEloCommand(eloCommand, solution, solutions, this);                
+                String sname = cmbStack.getSelectionModel().getSelectedItem();
+                Stack stack = stacks.getStacks().get(sname);
+                EloCommand eloCommand = stack.getEloCommands().get(currentItemSelected);
+                eloService.runEloCommand(eloCommand, stack, stacks, this);                
             }
         });      
         
@@ -167,9 +167,9 @@ public class EloTest extends Application {
         listvUnittestTools.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 String currentItemSelected = listvUnittestTools.getSelectionModel().getSelectedItem();
-                String pname = cmbSolution.getSelectionModel().getSelectedItem();
-                Solution solution = solutions.getSolutions().get(pname);
-                eloService.runUnittestTools(currentItemSelected, solution, solutions, this);
+                String pname = cmbStack.getSelectionModel().getSelectedItem();
+                Stack stack = stacks.getStacks().get(pname);
+                eloService.runUnittestTools(currentItemSelected, stack, stacks, this);
             }
         });      
         
@@ -202,9 +202,9 @@ public class EloTest extends Application {
         listvEloServices.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 String currentItemSelected = listvEloServices.getSelectionModel().getSelectedItem();
-                String pname = cmbSolution.getSelectionModel().getSelectedItem();
-                Solution solution = solutions.getSolutions().get(pname);
-                eloService.runEloServices(currentItemSelected, solution, solutions, this);
+                String pname = cmbStack.getSelectionModel().getSelectedItem();
+                Stack stack = stacks.getStacks().get(pname);
+                eloService.runEloServices(currentItemSelected, stack, stacks, this);
             }
         });      
         
@@ -230,8 +230,8 @@ public class EloTest extends Application {
     }
     
     public void setDisableControls(boolean value) {
-        lblSolution.setDisable(value);
-        cmbSolution.setDisable(value);        
+        lblStack.setDisable(value);
+        cmbStack.setDisable(value);        
         lblEloCli.setDisable(value);
         listvEloCli.setDisable(value);
         lblUnittestTools.setDisable(value);
@@ -282,7 +282,7 @@ public class EloTest extends Application {
         GridPane root = new GridPane();
         
         for (int i = 0; i < 5; i++) {
-            ColumnConstraints column = new ColumnConstraints(150);
+            ColumnConstraints column = new ColumnConstraints(200);
             root.getColumnConstraints().add(column);
         }
         
@@ -293,7 +293,7 @@ public class EloTest extends Application {
         root.setHgap(7);
         root.setVgap(7);
         
-        initComboBoxSolution();
+        initComboBoxStack();
         
         initListViewEloCli();
         
@@ -303,9 +303,9 @@ public class EloTest extends Application {
         
         initSearchPattern();
         
-        root.add(lblSolution, 0, 0);
-        root.add(cmbSolution, 1, 0);
-        GridPane.setHalignment(cmbSolution, HPos.RIGHT);
+        root.add(lblStack, 0, 0);
+        root.add(cmbStack, 1, 0);
+        GridPane.setHalignment(cmbStack, HPos.RIGHT);
 
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         VBox vbox = new VBox(lblEloCli, listvEloCli);
@@ -334,7 +334,7 @@ public class EloTest extends Application {
         root.add(chkCaseSensitiv, 1, 4);        
         GridPane.setHalignment(chkCaseSensitiv, HPos.RIGHT);
 
-        Scene scene = new Scene(root, 330, 460);
+        Scene scene = new Scene(root, 430, 460);
         
         primaryStage.setTitle("ELO Test");
         primaryStage.setScene(scene);

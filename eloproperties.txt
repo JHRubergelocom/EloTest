@@ -1,8 +1,8 @@
 #EloProperties
-#Thu Jul 23 09:55:17 CEST 2020
+#Mon Jul 27 14:07:57 CEST 2020
 CaseSensitiv=true
-SelectedEloServices=Webclient
+SelectedEloServices=Admin Console
+SelectedStack=ruberg-invoice20
 Pattern=RF_
-SelectedSolution=common
 SelectedEloCli=eloPrepare
-SelectedUnittestTools=create
+SelectedUnittestTools=export

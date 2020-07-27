@@ -826,9 +826,9 @@ class UnittestUtils {
         });        
     }
 
-    static void CreateUnittest(IXConnection ixConn, Solution solution) {
-        Map<String, EloPackage> eloPackages = solution.getEloPackages();
-        String solutionName = solution.getName();
+    static void CreateUnittest(IXConnection ixConn, Stack stack) {
+        Map<String, EloPackage> eloPackages = stack.getEloPackages();
+        String solutionName = stack.getSolution();
 
         final SortedMap<String, SortedMap<String, List<String>>> dicAlls;
         final SortedMap<String, SortedMap<String, List<String>>> dicAllRhinos;
@@ -870,7 +870,7 @@ class UnittestUtils {
         
     }
 
-    static void ShowReportMatchUnittest(IXConnection ixConn, Solution solution) {
+    static void ShowReportMatchUnittest(IXConnection ixConn, Stack solution) {
         Map<String, EloPackage> eloPackages = solution.getEloPackages();
         
         try {

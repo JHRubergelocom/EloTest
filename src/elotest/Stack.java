@@ -14,19 +14,25 @@ import org.json.JSONObject;
  *
  * @author ruberg
  */
-public class Solution {
-    private String name;
+public class Stack {
+    private String solution;
+    private String stack;
     private Map<String, EloPackage> eloPackages;
     private Map<String, EloCommand> eloCommands;
 
-    Solution(JSONObject obj) {
-        name = "";
+    Stack(JSONObject obj) {
+        solution = "";
+        stack = "playground";
         eloPackages = new HashMap<>();
         eloCommands = new HashMap<>();
         try {
-            name = obj.getString("name");            
+            solution = obj.getString("solution");            
         } catch (JSONException ex) {            
         }
+        try {
+            stack = obj.getString("stack");            
+        } catch (JSONException ex) {            
+        }        
         try {
             JSONObject[] jarrayEloPackages = JsonUtils.getArray(obj, "eloPackages");
             for(JSONObject objEloPackage: jarrayEloPackages){
@@ -45,8 +51,12 @@ public class Solution {
         }        
     }
     
-    public String getName() {
-        return name;
+    public String getSolution() {
+        return solution;
+    }
+    
+    public String getStack() {
+        return stack;
     }
     
     Map<String, EloPackage> getEloPackages() {
@@ -57,22 +67,15 @@ public class Solution {
         return eloCommands;
     }
     
-    public String getIxUrl(String gitUser) {   
-        return  "http://" + getStack(gitUser) + ".dev.elo/ix-Solutions/ix";
-    }
-    
-    public String getStack(String gitUser) {   
-        if(name.contains("playground")) {
-            return "playground";
-        }
-        return  gitUser + "-" + name;
+    public String getIxUrl() {   
+        return  "http://" + getStack() + ".dev.elo/ix-Solutions/ix";
     }
     
     public String getWorkingDir(String gitSolutionsDir) {
-        if(name.contentEquals("recruiting")) {
-            return gitSolutionsDir + "\\hr_" + name + ".git";                        
+        if(solution.contentEquals("recruiting")) {
+            return gitSolutionsDir + "\\hr_" + solution + ".git";                        
         } else {
-            return gitSolutionsDir + "\\" + name + ".git";            
+            return gitSolutionsDir + "\\" + solution + ".git";            
         }        
     }
     

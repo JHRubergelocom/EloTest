@@ -1,7 +1,8 @@
 {
-  "solutions": [
+  "stacks": [
     {
-      "name": "common",
+      "solution": "common",
+      "stack": "ruberg-common12",      
       "eloPackages": [
         {"name": "common", "folders": ["common"]},
         {"name": "common_document", "folders": ["common_document"]},
@@ -13,21 +14,23 @@
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"12.00"}
       ]
     },
     {
-      "name": "contract",
+      "solution": "contract",
+      "stack": "ruberg-contract12",      
       "eloPackages": [
         {"name": "contract", "folders": ["contract"]}
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00" }
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00"}
       ]
     },
     {
-      "name": "hr",
+      "solution": "hr",
+      "stack": "ruberg-hr12",      
       "eloPackages": [
         {"name": "hr", "folders": ["hr", "hr_orgchart"]}
       ],
@@ -37,7 +40,8 @@
       ]
     },
     {
-      "name": "invoice",
+      "solution": "invoice",
+      "stack": "ruberg-invoice12",      
       "eloPackages": [
         {"name": "invoice", "folders": ["invoice", "invoice_datev", "invoice_electronic"]}, 
         {"name": "connector_dx", "folders": ["connector_dx"]}
@@ -48,7 +52,20 @@
       ]
     },
     {
-      "name": "knowledge",
+      "solution": "invoice",
+      "stack": "ruberg-invoice20",      
+      "eloPackages": [
+        {"name": "invoice", "folders": ["invoice", "invoice_datev", "invoice_electronic"]}, 
+        {"name": "connector_dx", "folders": ["connector_dx"]}
+      ],
+      "eloCommands": [
+        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00"}
+      ]
+    },    
+    {
+      "solution": "knowledge",
+      "stack": "ruberg-knowledge12",
       "eloPackages": [
         {"name": "knowledge", "folders": ["knowledge"]}
       ],
@@ -59,7 +76,8 @@
       ]
     },
     {
-      "name": "learning",
+      "solution": "learning",
+      "stack": "ruberg-learning12",      
       "eloPackages": [
         {"name": "learning", "folders": ["learning", "learning_gotowebinar"]}
       ],
@@ -69,7 +87,8 @@
       ]
     },
     {
-      "name": "playground",
+      "solution": "playground",
+      "stack": "playground",      
       "eloPackages": [
         {"name": "common", "folders": ["common"]},
         {"name": "common_document", "folders": ["common_document"]},
@@ -96,7 +115,8 @@
       "eloCommands": []
     },
     {
-      "name": "productivity",
+      "solution": "productivity",
+      "stack": "ruberg-productivity12",      
       "eloPackages": [
         {"name": "account", "folders": ["account"]}, 
         {"name": "checklist", "folders": ["checklist"]}, 
@@ -111,7 +131,8 @@
       ]
     },
     {
-      "name": "pubsec",
+      "solution": "pubsec",
+      "stack": "ruberg-pubsec12",
       "eloPackages": [
         {"name": "pubsec", "folders": ["pubsec", "pubsec_process"]} 
       ],
@@ -121,7 +142,8 @@
       ]
     },
     {
-      "name": "recruiting",
+      "solution": "recruiting",
+      "stack": "ruberg-recruiting12",      
       "eloPackages": [
         {"name": "recruiting", "folders": ["recruiting", "recruiting_jobportal", "recruiting_integration"]} 
       ],
@@ -131,7 +153,8 @@
       ]
     },
     {
-      "name": "visitor",
+      "solution": "visitor",
+      "stack": "ruberg-visitor12",      
       "eloPackages": [
         {"name": "visitor", "folders": ["visitor"]}
       ],
@@ -143,7 +166,6 @@
   ],
   "gitSolutionsDir": "C:\\Git\\solutions",
   "gitDevDir": "C:\\Git\\dev",
-  "gitUser": "ruberg",
   "arcPath": "ARCPATH[1]:/Administration/Business Solutions",
   "user": "Administrator",
   "pwd": "elo"

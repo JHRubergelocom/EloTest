@@ -6,7 +6,6 @@
 package elotest;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,28 +20,25 @@ import org.json.JSONObject;
  *
  * @author ruberg
  */
-class Solutions {
-    private SortedMap<String, Solution> solutions;
+class Stacks {
+    private SortedMap<String, Stack> stacks;
     private String gitSolutionsDir;
     private String gitDevDir;
-    private String gitUser;
     private String arcPath;
     private String user;
     private String pwd;    
     
-    Solutions(String jsonFile) {
-        solutions = new TreeMap<>();
+    Stacks(String jsonFile) {
+        stacks = new TreeMap<>();
         gitSolutionsDir = "";
         gitDevDir = "";
-        gitUser = "";
         arcPath = "";
         user = "";
         pwd = "";
 
-        JSONObject jobjSolutions;
+        JSONObject jobjStacks;
         String jsonString = "";
         BufferedReader in = null;
-        File file = new File(jsonFile); 
         String line;
         
         try { 
@@ -64,44 +60,39 @@ class Solutions {
                 }
             }
         }
-        jobjSolutions = new JSONObject(jsonString);        
-        JSONObject[] jarraySolutions = JsonUtils.getArray(jobjSolutions, "solutions");
-        for(JSONObject objEloSolution: jarraySolutions){
-            solutions.put(objEloSolution.getString("name"), new Solution(objEloSolution));
+        jobjStacks = new JSONObject(jsonString);        
+        JSONObject[] jarrayStacks = JsonUtils.getArray(jobjStacks, "stacks");
+        for(JSONObject objEloStack: jarrayStacks){
+            stacks.put(objEloStack.getString("stack"), new Stack(objEloStack));
         }
         
         try {
-            gitSolutionsDir = jobjSolutions.getString("gitSolutionsDir");            
+            gitSolutionsDir = jobjStacks.getString("gitSolutionsDir");            
         } catch (JSONException ex) {            
         }
         try {
-            gitDevDir = jobjSolutions.getString("gitDevDir");            
+            gitDevDir = jobjStacks.getString("gitDevDir");            
         } catch (JSONException ex) {            
         }
         try {
-            gitUser = jobjSolutions.getString("gitUser");            
+            arcPath = jobjStacks.getString("arcPath");            
         } catch (JSONException ex) {            
         }
         try {
-            arcPath = jobjSolutions.getString("arcPath");            
+            user = jobjStacks.getString("user");            
         } catch (JSONException ex) {            
         }
         try {
-            user = jobjSolutions.getString("user");            
-        } catch (JSONException ex) {            
-        }
-        try {
-            pwd = jobjSolutions.getString("pwd");              
+            pwd = jobjStacks.getString("pwd");              
         } catch (JSONException ex) {            
         }
         
     }
 
-    Solutions() {
-        solutions = new TreeMap<>();
+    Stacks() {
+        stacks = new TreeMap<>();
         gitSolutionsDir = "";
         gitDevDir = "";
-        gitUser = "";
         arcPath = "";
         user = "";
         pwd = "";
@@ -123,16 +114,12 @@ class Solutions {
         return pwd;
     }
 
-    public String getGitUser() {
-        return gitUser;
-    }
-
     public String getArcPath() {
         return arcPath;
     }
 
-    public Map<String, Solution> getSolutions() {
-      return solutions;  
+    public Map<String, Stack> getStacks() {
+      return stacks;  
     } 
     
 }

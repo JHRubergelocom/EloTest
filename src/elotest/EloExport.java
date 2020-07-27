@@ -16,11 +16,11 @@ import javafx.application.Platform;
 class EloExport {
     static private final boolean REFERENCES = false;     
 
-    static void StartExport(IXConnection ixConn, Solution solution, Solutions solutions) {
+    static void StartExport(IXConnection ixConn, Stack stack, Stacks stacks) {
         try {
-            String name = solution.getName();
-            String exportPath = "C:\\Temp\\ExportElo\\" + name;
-            String arcPath = solutions.getArcPath();
+            String solutionname = stack.getSolution();
+            String exportPath = "C:\\Temp\\ExportElo\\" + solutionname;
+            String arcPath = stacks.getArcPath();
             File exportDir = new File(exportPath);
             if (!exportDir.exists()) {
                 exportDir.mkdirs();
