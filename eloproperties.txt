@@ -1,8 +1,8 @@
 #EloProperties
-#Mon Jul 27 14:07:57 CEST 2020
-CaseSensitiv=true
+#Wed Jul 29 10:12:09 CEST 2020
+CaseSensitiv=false
 SelectedEloServices=Admin Console
-SelectedStack=ruberg-invoice20
-Pattern=RF_
+SelectedStack=ruberg-common
+Pattern=sol.dev.node.create
 SelectedEloCli=eloPrepare
-SelectedUnittestTools=export
+SelectedUnittestTools=search

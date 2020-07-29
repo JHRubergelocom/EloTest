@@ -2,7 +2,7 @@
   "stacks": [
     {
       "solution": "common",
-      "stack": "ruberg-common12",      
+      "stack": "ruberg-common",      
       "eloPackages": [
         {"name": "common", "folders": ["common"]},
         {"name": "common_document", "folders": ["common_document"]},
@@ -14,46 +14,34 @@
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"12.00"}
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00"}
       ]
     },
     {
       "solution": "contract",
-      "stack": "ruberg-contract12",      
+      "stack": "ruberg-contract",      
       "eloPackages": [
         {"name": "contract", "folders": ["contract"]}
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00"}
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"20.00"}
       ]
     },
     {
       "solution": "hr",
-      "stack": "ruberg-hr12",      
+      "stack": "ruberg-hr",      
       "eloPackages": [
         {"name": "hr", "folders": ["hr", "hr_orgchart"]}
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00"}
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"20.00"}
       ]
     },
     {
       "solution": "invoice",
-      "stack": "ruberg-invoice12",      
-      "eloPackages": [
-        {"name": "invoice", "folders": ["invoice", "invoice_datev", "invoice_electronic"]}, 
-        {"name": "connector_dx", "folders": ["connector_dx"]}
-      ],
-      "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"12.00"}
-      ]
-    },
-    {
-      "solution": "invoice",
-      "stack": "ruberg-invoice20",      
+      "stack": "ruberg-invoice",      
       "eloPackages": [
         {"name": "invoice", "folders": ["invoice", "invoice_datev", "invoice_electronic"]}, 
         {"name": "connector_dx", "folders": ["connector_dx"]}
@@ -62,28 +50,28 @@
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00"}
       ]
-    },    
+    },
     {
       "solution": "knowledge",
-      "stack": "ruberg-knowledge12",
+      "stack": "ruberg-knowledge",
       "eloPackages": [
         {"name": "knowledge", "folders": ["knowledge"]}
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPullPackage", "cmd": "elo pull", "workspace": "knowledge-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "default", "version":"12.00" }
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "default", "version":"20.00" }
       ]
     },
     {
       "solution": "learning",
-      "stack": "ruberg-learning12",      
+      "stack": "ruberg-learning",      
       "eloPackages": [
         {"name": "learning", "folders": ["learning", "learning_gotowebinar"]}
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "default", "version":"12.00" }
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "default", "version":"20.00" }
       ]
     },
     {
@@ -116,7 +104,7 @@
     },
     {
       "solution": "productivity",
-      "stack": "ruberg-productivity12",      
+      "stack": "ruberg-productivity",      
       "eloPackages": [
         {"name": "account", "folders": ["account"]}, 
         {"name": "checklist", "folders": ["checklist"]}, 
@@ -127,40 +115,40 @@
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPullPackage", "cmd": "elo pull", "workspace": "notify-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"12.00" }
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }
       ]
     },
     {
       "solution": "pubsec",
-      "stack": "ruberg-pubsec12",
+      "stack": "ruberg-pubsec",
       "eloPackages": [
         {"name": "pubsec", "folders": ["pubsec", "pubsec_process"]} 
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00" }
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"20.00" }
       ]
     },
     {
       "solution": "recruiting",
-      "stack": "ruberg-recruiting12",      
+      "stack": "ruberg-recruiting",      
       "eloPackages": [
         {"name": "recruiting", "folders": ["recruiting", "recruiting_jobportal", "recruiting_integration"]} 
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00" }
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"20.00" }
       ]
     },
     {
       "solution": "visitor",
-      "stack": "ruberg-visitor12",      
+      "stack": "ruberg-visitor",      
       "eloPackages": [
         {"name": "visitor", "folders": ["visitor"]}
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"12.00" }
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"20.00" }
       ]
     }
   ],

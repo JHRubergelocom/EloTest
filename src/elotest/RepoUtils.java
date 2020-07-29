@@ -368,7 +368,18 @@ class RepoUtils {
                         }     
                     });
                 }); 
-            }            
+            }  
+            
+            // Unittests durchsuchen
+            String parentId;
+            parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/_global/Unit Tests";
+            Sord[] sords = FindChildren(ixConn, parentId, true, true);
+            for (Sord s : sords) {
+                SordDoc sDoc = new SordDoc(s);
+                SortedMap<Integer, String> docLines = DownloadDocumentToLines(ixConn, sDoc, pattern);
+                dicSordDocLines.put(sDoc, docLines);
+            }
+            
         }        
         return dicSordDocLines;                
     }
