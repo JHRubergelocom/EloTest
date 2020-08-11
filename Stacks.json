@@ -150,7 +150,17 @@
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"20.00" }
       ]
-    }
+    },
+    {
+      "solution": "datevaccounting",
+      "stack": "ruberg-datevaccounting",      
+      "eloPackages": [
+        {"name": "sol.datev.accounting", "folders": ["sol.datev.accounting"]}
+      ],
+      "eloCommands": [
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }                
+      ]
+    }    
   ],
   "gitSolutionsDir": "C:\\Git\\solutions",
   "gitDevDir": "C:\\Git\\dev",

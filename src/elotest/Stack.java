@@ -72,10 +72,13 @@ public class Stack {
     }
     
     public String getWorkingDir(String gitSolutionsDir) {
-        if(solution.contentEquals("recruiting")) {
-            return gitSolutionsDir + "\\hr_" + solution + ".git";                        
-        } else {
-            return gitSolutionsDir + "\\" + solution + ".git";            
+        switch (solution) {
+            case "recruiting":
+                return gitSolutionsDir + "\\hr_" + solution + ".git";
+            case "datevaccounting":
+                return gitSolutionsDir + "\\datev_accounting.git";
+            default:
+                return gitSolutionsDir + "\\" + solution + ".git";
         }        
     }
     
