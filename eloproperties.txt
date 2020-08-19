@@ -1,8 +1,8 @@
 #EloProperties
-#Tue Aug 11 14:59:54 CEST 2020
+#Wed Aug 12 13:21:19 CEST 2020
 CaseSensitiv=false
 SelectedEloServices=Admin Console
 SelectedStack=ruberg-datevaccounting
 Pattern=sol.dev.node.create
 SelectedEloCli=eloPrepare
-SelectedUnittestTools=show
+SelectedUnittestTools=matching

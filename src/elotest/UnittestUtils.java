@@ -405,6 +405,12 @@ class UnittestUtils {
                     }
                 }  
                 
+                if (className.equals("sol.datev.accounting.Utils")) {
+                    if (method.equals("toString")) {
+                        continue;
+                    }
+                }  
+                
                 // TODO
                 boolean match = false;
                 if(dicTestedLibs.containsKey(className)){
