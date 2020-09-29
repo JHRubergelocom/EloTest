@@ -161,7 +161,18 @@
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }                
       ]
-    }    
+    },
+    {
+      "solution": "meeting",
+      "stack": "ruberg-meeting",      
+      "eloPackages": [
+        {"name": "meeting", "folders": ["meeting"]}
+      ],
+      "eloCommands": [
+        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }                
+      ]
+    }
   ],
   "gitSolutionsDir": "C:\\Git\\solutions",
   "gitDevDir": "C:\\Git\\dev",
