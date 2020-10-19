@@ -427,7 +427,39 @@ class UnittestUtils {
         return dicLibsMatch;        
     }
     
-    private static String CreateReportMatchUnittest(SortedMap<String, Boolean> dicRFs, SortedMap<String, Boolean> dicASDirectRules, SortedMap<String, Boolean> dicActionDefs, SortedMap<String, SortedMap<String, Boolean>> dicLibAlls, SortedMap<String, SortedMap<String, Boolean>> dicLibRhinos, SortedMap<String, SortedMap<String, Boolean>> dicLibIndexServerScriptingBases, SortedMap<String, SortedMap<String, Boolean>> dicLibELOasBases) {
+    private static SortedMap<String, Boolean> GetDynKwls(IXConnection ixConn, String[] jsTexts, EloPackage eloPackage) {
+        List<String> parentIds =  new ArrayList<>();
+        Map<String, String> folders = eloPackage.getFolders();
+        folders.forEach((k, v) -> {
+            parentIds.add("ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/" + v + "/IndexServer Scripting Base/DynKwl");
+        });
+        SortedMap<String, Boolean> dicDynKwls = new TreeMap<>();
+        parentIds.forEach((parentId) -> {            
+            Sord[] sordRFInfo = RepoUtils.FindChildren(ixConn, parentId, true, true);
+            for(Sord s : sordRFInfo) {  
+               String dynKwlName = "";  
+               List<String> jsLines = RepoUtils.DownloadDocumentToList (ixConn, s);  
+ 
+                for (String line : jsLines) {
+                    if (line.contains("sol.define(")) {
+                        dynKwlName = line;                    
+                        if (dynKwlName.split("\"").length > 1) {
+                            dynKwlName = dynKwlName.split("\"")[1].trim();                    
+                            if (!dicDynKwls.containsKey(dynKwlName)) {
+                                boolean match = Match(dynKwlName, eloPackage, jsTexts);
+                                dicDynKwls.put(dynKwlName, match);
+                            }                        
+                        }
+                    }
+                }           
+                
+            }         
+        });
+        return dicDynKwls;
+        
+    }
+    
+    private static String CreateReportMatchUnittest(SortedMap<String, Boolean> dicRFs, SortedMap<String, Boolean> dicASDirectRules, SortedMap<String, Boolean> dicActionDefs, SortedMap<String, SortedMap<String, Boolean>> dicLibAlls, SortedMap<String, SortedMap<String, Boolean>> dicLibRhinos, SortedMap<String, SortedMap<String, Boolean>> dicLibIndexServerScriptingBases, SortedMap<String, SortedMap<String, Boolean>> dicLibELOasBases, SortedMap<String, Boolean> dicDynKwls) {
         String htmlDoc = "<html>\n";
         String htmlHead = Http.CreateHtmlHead("Register Functions matching Unittest");
         String htmlStyle = Http.CreateHtmlStyle();
@@ -470,6 +502,19 @@ class UnittestUtils {
             rows.add(row);            
         }
         htmlTable = Http.CreateHtmlTable("Action Definitions matching Unittest", cols, rows);
+        htmlBody += htmlTable;
+                
+        cols = new ArrayList<>();
+        cols.add("Dynamic Keyword List");
+        cols.add("Unittest");
+        rows = new ArrayList<>();
+        for (Map.Entry<String, Boolean> entry : dicDynKwls.entrySet()) {
+            List<String> row = new ArrayList();
+            row.add(entry.getKey());
+            row.add(entry.getValue().toString());
+            rows.add(row);            
+        }
+        htmlTable = Http.CreateHtmlTable("Dynamic Keyword Lists matching Unittest", cols, rows);
         htmlBody += htmlTable;
         
         cols = new ArrayList<>();
@@ -526,8 +571,8 @@ class UnittestUtils {
             }
         }        
         htmlTable = Http.CreateHtmlTable("ELOas Base/OptionalJsLibs lib matching Unittest", cols, rows);
-        htmlBody += htmlTable;        
-
+        htmlBody += htmlTable;    
+        
         htmlBody += "</body>\n";
         htmlDoc += htmlHead;
         htmlDoc += htmlStyle;
@@ -890,6 +935,7 @@ class UnittestUtils {
             final SortedMap<String, SortedMap<String, Boolean>> dicLibRhinos;
             final SortedMap<String, SortedMap<String, Boolean>> dicLibIndexServerScriptingBases;
             final SortedMap<String, SortedMap<String, Boolean>> dicLibELOasBases;            
+            final SortedMap<String, Boolean> dicDynKwls;
             
             if (eloPackages.isEmpty()) {                
                 dicRFs = GetRFs(ixConn, jsTexts, new EloPackage()); 
@@ -899,6 +945,10 @@ class UnittestUtils {
                 dicLibRhinos = GetLibsMatch(ixConn, jsTextsSortedMap, new EloPackage(), "All Rhino"); 
                 dicLibIndexServerScriptingBases = GetLibsMatch(ixConn, jsTextsSortedMap, new EloPackage(), "IndexServer Scripting Base"); 
                 dicLibELOasBases = GetLibsMatch(ixConn, jsTextsSortedMap, new EloPackage(), "ELOas Base/OptionalJsLibs"); 
+// TODO
+                dicDynKwls = GetDynKwls(ixConn, jsTexts, new EloPackage()); 
+// TODO
+                
             } else {
                 dicRFs = new TreeMap<>();
                 dicASDirectRules = new TreeMap<>();
@@ -907,6 +957,7 @@ class UnittestUtils {
                 dicLibRhinos = new TreeMap<>();
                 dicLibIndexServerScriptingBases = new TreeMap<>();
                 dicLibELOasBases = new TreeMap<>();
+                dicDynKwls = new TreeMap<>();
                 
                 eloPackages.forEach((n, p) -> {
                     SortedMap<String, Boolean> dicRF = GetRFs(ixConn, jsTexts, p);        
@@ -916,17 +967,18 @@ class UnittestUtils {
                     SortedMap<String, SortedMap<String, Boolean>> dicLibRhino = GetLibsMatch(ixConn, jsTextsSortedMap, p, "All Rhino");
                     SortedMap<String, SortedMap<String, Boolean>> dicLibIndexServerScriptingBase = GetLibsMatch(ixConn, jsTextsSortedMap, p, "IndexServer Scripting Base");
                     SortedMap<String, SortedMap<String, Boolean>> dicLibELOasBase = GetLibsMatch(ixConn, jsTextsSortedMap, p, "ELOas Base/OptionalJsLibs");   
-                    
+                    SortedMap<String, Boolean> dicDynKwl = GetDynKwls(ixConn, jsTexts, p); 
                     dicRFs.putAll(dicRF);
                     dicASDirectRules.putAll(dicASDirectRule);
                     dicActionDefs.putAll(dicActionDef);
                     dicLibAlls.putAll(dicLibAll);
                     dicLibRhinos.putAll(dicLibRhino);
                     dicLibIndexServerScriptingBases.putAll(dicLibIndexServerScriptingBase);
-                    dicLibELOasBases.putAll(dicLibELOasBase);                                        
+                    dicLibELOasBases.putAll(dicLibELOasBase);   
+                    dicDynKwls.putAll(dicDynKwl);   
                 });
             }
-            String htmlDoc = CreateReportMatchUnittest(dicRFs, dicASDirectRules, dicActionDefs, dicLibAlls, dicLibRhinos, dicLibIndexServerScriptingBases, dicLibELOasBases);
+            String htmlDoc = CreateReportMatchUnittest(dicRFs, dicASDirectRules, dicActionDefs, dicLibAlls, dicLibRhinos, dicLibIndexServerScriptingBases, dicLibELOasBases, dicDynKwls);
             Http.ShowReport(htmlDoc);
         } catch (RemoteException ex) {
         }        
