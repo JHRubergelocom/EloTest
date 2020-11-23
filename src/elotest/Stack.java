@@ -77,6 +77,8 @@ public class Stack {
                 return gitSolutionsDir + "\\hr_" + solution + ".git";
             case "datevaccounting":
                 return gitSolutionsDir + "\\datev_accounting.git";
+            case "teamroom":
+                return gitSolutionsDir + "\\" + solution + "1.git";                
             default:
                 return gitSolutionsDir + "\\" + solution + ".git";
         }        

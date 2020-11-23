@@ -172,7 +172,18 @@
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
         {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }                
       ]
-    }
+    },    
+    {
+      "solution": "teamroom",
+      "stack": "ruberg-teamroom",      
+      "eloPackages": [
+        {"name": "teamroom", "folders": ["elo.teamroom", "elo.teamroom.Local", "elo.teamroom.Remote"]}
+      ],
+      "eloCommands": [
+        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }                
+      ]
+    }    
   ],
   "gitSolutionsDir": "C:\\Git\\solutions",
   "gitDevDir": "C:\\Git\\dev",

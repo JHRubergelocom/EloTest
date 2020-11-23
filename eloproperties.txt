@@ -1,8 +1,8 @@
 #EloProperties
-#Mon Oct 19 15:34:54 CEST 2020
+#Mon Nov 23 15:58:48 CET 2020
 CaseSensitiv=true
 SelectedEloServices=Admin Console
-SelectedStack=ruberg-common
-Pattern=sol.dev.ix.dynkwl.FindUnitTestIterator
-SelectedEloCli=eloPrepare
+SelectedStack=ruberg-teamroom
+Pattern=RF_sol_teamroom_function_HandleEvent
+SelectedEloCli=eloPullUnittest
 SelectedUnittestTools=matching
