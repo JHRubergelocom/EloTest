@@ -134,7 +134,7 @@ class UnittestUtils {
                 actionDef = "actions." + actionDef;
                 if (!dicActionDefs.containsKey(actionDef)) {
                     boolean match = Match(actionDef, eloPackage, jsTexts);
-                    if(eloPackage.getName().equals("privacy") || eloPackage.getName().equals("pubsec")) {
+                    if(eloPackage.getName().equals("privacy") || eloPackage.getName().equals("pubsec")|| eloPackage.getName().equals("teamroom")) {
                         match = true;
                     }                
                     dicActionDefs.put(actionDef, match);
@@ -407,6 +407,12 @@ class UnittestUtils {
                 
                 if (className.equals("sol.datev.accounting.Utils")) {
                     if (method.equals("toString")) {
+                        continue;
+                    }
+                }  
+
+                if (className.equals("sol.teamroom.Utils")) {
+                    if (method.equals("execute")) {
                         continue;
                     }
                 }  

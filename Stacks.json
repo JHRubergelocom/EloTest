@@ -126,7 +126,7 @@
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"20.00" }
+        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }
       ]
     },
     {
