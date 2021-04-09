@@ -1,8 +1,8 @@
 #EloProperties
-#Mon Nov 23 15:58:48 CET 2020
-CaseSensitiv=true
+#Fri Apr 09 14:03:03 CEST 2021
+CaseSensitiv=false
 SelectedEloServices=Admin Console
-SelectedStack=ruberg-teamroom
-Pattern=RF_sol_teamroom_function_HandleEvent
-SelectedEloCli=eloPullUnittest
+SelectedStack=ruberg-common
+Pattern=RF_sol_common_monitoring_ix_service_SearchTimedEvents*
+SelectedEloCli=eloPrepare
 SelectedUnittestTools=matching

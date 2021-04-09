@@ -64,7 +64,7 @@ class UnittestUtils {
                             String rfName = line;
                             String[] rfNames = rfName.split("\\(");
                             rfName = rfNames[0];
-                            if (!line.endsWith(",")
+                            if (!line.endsWith(",") && !line.endsWith("*") 
                                     && rfName.startsWith("RF_") && !line.contains("RF_ServiceBaseName") && !line.endsWith(".")
                                     && !line.contains("RF_FunctionName") && !line.contains("RF_MyFunction")
                                     && !line.contains("RF_custom_functions_MyFunction") && !line.contains("RF_custom_services_MyFunction")
