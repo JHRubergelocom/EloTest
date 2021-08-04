@@ -182,7 +182,10 @@
       "solution": "meeting",
       "stack": "ruberg-meeting",      
       "eloPackages": [
-        {"name": "meeting", "folders": ["meeting"]}
+        {"name": "common", "folders": ["common_entity_candidate"]},
+        {"name": "meeting", "folders": ["meeting"]},
+        {"name": "meeting.task", "folders": ["meeting_task"]},
+        {"name": "meeting.voting", "folders": ["meeting_voting"]}
       ],
       "eloCommands": [
         {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
