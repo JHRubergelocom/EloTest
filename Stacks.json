@@ -13,8 +13,8 @@
         {"name": "dev", "folders": ["development"]}
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00"}
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "jan", "version":"20.00"}
       ]
     },
     {
@@ -30,7 +30,7 @@
         {"name": "dev", "folders": ["development"]}
       ],
       "eloCommands": [
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00"}
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "jan", "version":"20.00"}
       ]
     },
     {
@@ -40,8 +40,8 @@
         {"name": "contract", "folders": ["contract"]}
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"20.00"}
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "de", "version":"20.00"}
       ]
     },
     {
@@ -51,8 +51,8 @@
         {"name": "hr", "folders": ["hr", "hr_orgchart"]}
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"20.00"}
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "de", "version":"20.00"}
       ]
     },
     {
@@ -63,8 +63,8 @@
         {"name": "connector_dx", "folders": ["connector_dx"]}
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00"}
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "jan", "version":"20.00"}
       ]
     },
     {
@@ -74,9 +74,9 @@
         {"name": "knowledge", "folders": ["knowledge"]}
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPullPackage", "cmd": "elo pull", "workspace": "knowledge-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "default", "version":"20.00" }
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPullPackage", "cmd": "elo-sol pull", "workspace": "knowledge-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "default", "version":"20.00" }
       ]
     },
     {
@@ -86,8 +86,8 @@
         {"name": "learning", "folders": ["learning", "learning_gotowebinar"]}
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "default", "version":"20.00" }
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "default", "version":"20.00" }
       ]
     },
     {
@@ -129,9 +129,9 @@
         {"name": "privacy", "folders": ["privacy"]}
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPullPackage", "cmd": "elo pull", "workspace": "notify-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPullPackage", "cmd": "elo-sol pull", "workspace": "notify-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "jan", "version":"20.00" }
       ]
     },
     {
@@ -141,8 +141,8 @@
         {"name": "pubsec", "folders": ["pubsec", "pubsec_process"]} 
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "jan", "version":"20.00" }
       ]
     },
     {
@@ -152,8 +152,8 @@
         {"name": "recruiting", "folders": ["recruiting", "recruiting_jobportal", "recruiting_integration"]} 
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"20.00" }
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "de", "version":"20.00" }
       ]
     },
     {
@@ -163,8 +163,8 @@
         {"name": "visitor", "folders": ["visitor"]}
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "de", "version":"20.00" }
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "de", "version":"20.00" }
       ]
     },
     {
@@ -174,8 +174,8 @@
         {"name": "sol.datev.accounting", "folders": ["sol.datev.accounting"]}
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }                
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "jan", "version":"20.00" }                
       ]
     },
     {
@@ -188,8 +188,8 @@
         {"name": "meeting.voting", "folders": ["meeting_voting"]}
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }                
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "jan", "version":"20.00" }                
       ]
     },    
     {
@@ -199,8 +199,8 @@
         {"name": "teamroom", "folders": ["elo.teamroom", "elo.teamroom.Local", "elo.teamroom.Remote"]}
       ],
       "eloCommands": [
-        {"name": "eloPullUnittest", "cmd": "elo pull", "workspace": "unittests-only" },
-        {"name": "eloPrepare", "cmd": "elo prepare", "workspace": "jan", "version":"20.00" }                
+        {"name": "eloPullUnittest", "cmd": "elo-sol pull", "workspace": "unittests-only" },
+        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "jan", "version":"20.00" }                
       ]
     }    
   ],
