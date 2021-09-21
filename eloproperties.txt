@@ -1,8 +1,8 @@
 #EloProperties
-#Fri Apr 09 14:03:03 CEST 2021
-CaseSensitiv=false
+#Mon Sep 20 14:49:46 CEST 2021
+CaseSensitiv=true
 SelectedEloServices=Admin Console
 SelectedStack=ruberg-common
-Pattern=RF_sol_common_monitoring_ix_service_SearchTimedEvents*
+Pattern=addInjections
 SelectedEloCli=eloPrepare
-SelectedUnittestTools=matching
+SelectedUnittestTools=create

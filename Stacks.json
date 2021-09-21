@@ -18,22 +18,6 @@
       ]
     },
     {
-      "solution": "common",
-      "stack": "ruberg-pdfexport",      
-      "eloPackages": [
-        {"name": "common", "folders": ["common"]},
-        {"name": "common_document", "folders": ["common_document"]},
-        {"name": "common_fx", "folders": ["common_fx"]},
-        {"name": "common_monitoring", "folders": ["common_monitoring"]},
-        {"name": "common_sig", "folders": ["common_signature"]},
-        {"name": "connector_xml", "folders": ["connector_xml"]},
-        {"name": "dev", "folders": ["development"]}
-      ],
-      "eloCommands": [
-        {"name": "eloPrepare", "cmd": "elo-sol prepare", "workspace": "jan", "version":"20.00"}
-      ]
-    },
-    {
       "solution": "contract",
       "stack": "ruberg-contract",      
       "eloPackages": [
