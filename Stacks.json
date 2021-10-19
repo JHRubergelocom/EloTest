@@ -169,6 +169,7 @@
         {"name": "common", "folders": ["common_entity_candidate"]},
         {"name": "meeting", "folders": ["meeting"]},
         {"name": "meeting.task", "folders": ["meeting_task"]},
+        {"name": "meeting_ms365", "folders": ["meeting_ms365"]},
         {"name": "meeting.voting", "folders": ["meeting_voting"]}
       ],
       "eloCommands": [
