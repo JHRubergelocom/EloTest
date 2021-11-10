@@ -13,7 +13,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
 import javafx.application.Platform;
 
 /**
@@ -180,6 +183,38 @@ class Http {
 
         htmlStyle += "  </style>\n";
         return htmlStyle;        
+    }
+    
+    static String CreateHtmlTableDics(String header, String col1, String col2, SortedMap<String, Boolean> dics) {        
+        List<String> cols = new ArrayList<>();
+        cols.add(col1);
+        cols.add(col2);        
+        List<List<String>> rows = new ArrayList<>();
+        for (Map.Entry<String, Boolean> entry : dics.entrySet()) {
+            List<String> row = new ArrayList<>();
+            row.add(entry.getKey());
+            row.add(entry.getValue().toString());
+            rows.add(row);
+        }
+        return CreateHtmlTable(header, cols, rows);
+    }
+    
+    static String CreateHtmlTableDicLibs(String header, String col1, String col2, String col3, SortedMap<String, SortedMap<String, Boolean>> dicLibs) {
+        List<String> cols = new ArrayList<>();
+        cols.add(col1);
+        cols.add(col2);
+        cols.add(col3);
+        List<List<String>> rows = new ArrayList<>();        
+        for (Map.Entry<String, SortedMap<String, Boolean>> entryClass : dicLibs.entrySet()) {
+            for (Map.Entry<String, Boolean> entryMethod : entryClass.getValue().entrySet()) {
+                List<String> row = new ArrayList();            
+                row.add(entryClass.getKey());
+                row.add(entryMethod.getKey());
+                row.add(entryMethod.getValue().toString());
+                rows.add(row);            
+            }
+        }        
+        return CreateHtmlTable(header, cols, rows);        
     }
 
     static String CreateHtmlTable(String header, List<String> cols, List<List<String>> rows) {
