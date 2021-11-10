@@ -892,27 +892,54 @@ class UnittestUtils {
         final SortedMap<String, SortedMap<String, List<String>>> dicIndexServerScriptingBases;
         final SortedMap<String, SortedMap<String, List<String>>> dicELOasBases;
         
+        final SortedMap<String, SortedMap<String, List<String>>> dicELOixActions;
+        final SortedMap<String, SortedMap<String, List<String>>> dicELOixDynKwls;
+        final SortedMap<String, SortedMap<String, List<String>>> dicELOixFunctions;
+        final SortedMap<String, SortedMap<String, List<String>>> dicELOixServices;        
+        
         if (eloPackages.isEmpty()) {                
             dicAlls = GetLibs(ixConn, new EloPackage(), "All"); 
             dicAllRhinos = GetLibs(ixConn, new EloPackage(), "All Rhino"); 
             dicIndexServerScriptingBases = GetLibs(ixConn, new EloPackage(), "IndexServer Scripting Base"); 
-            dicELOasBases = GetLibs(ixConn, new EloPackage(), "ELOas Base/OptionalJsLibs");             
+            dicELOasBases = GetLibs(ixConn, new EloPackage(), "ELOas Base/OptionalJsLibs");  
+            
+            dicELOixActions = GetLibs(ixConn, new EloPackage(), "IndexServer Scripting Base/Actions"); 
+            dicELOixDynKwls = GetLibs(ixConn, new EloPackage(), "IndexServer Scripting Base/DynKwl"); 
+            dicELOixFunctions = GetLibs(ixConn, new EloPackage(), "IndexServer Scripting Base/Functions"); 
+            dicELOixServices = GetLibs(ixConn, new EloPackage(), "IndexServer Scripting Base/Services"); 
+            
         } else { 
             dicAlls = new TreeMap<>();
             dicAllRhinos = new TreeMap<>();
             dicIndexServerScriptingBases = new TreeMap<>();
             dicELOasBases = new TreeMap<>();
             
+            dicELOixActions = new TreeMap<>();
+            dicELOixDynKwls = new TreeMap<>();
+            dicELOixFunctions = new TreeMap<>();
+            dicELOixServices = new TreeMap<>();
+            
             eloPackages.forEach((n, p) -> {
                 SortedMap<String, SortedMap<String, List<String>>> dicAll = GetLibs(ixConn, p, "All");    
                 SortedMap<String, SortedMap<String, List<String>>> dicAllRhino = GetLibs(ixConn, p, "All Rhino");    
                 SortedMap<String, SortedMap<String, List<String>>> dicIndexServerScriptingBase = GetLibs(ixConn, p, "IndexServer Scripting Base");    
                 SortedMap<String, SortedMap<String, List<String>>> dicELOasBase = GetLibs(ixConn, p, "ELOas Base/OptionalJsLibs");    
+                
+                SortedMap<String, SortedMap<String, List<String>>> dicELOixAction = GetLibs(ixConn, p, "IndexServer Scripting Base/Actions");    
+                SortedMap<String, SortedMap<String, List<String>>> dicELOixDynKwl = GetLibs(ixConn, p, "IndexServer Scripting Base/DynKwl");    
+                SortedMap<String, SortedMap<String, List<String>>> dicELOixFunction = GetLibs(ixConn, p, "IndexServer Scripting Base/Functions");    
+                SortedMap<String, SortedMap<String, List<String>>> dicELOixService = GetLibs(ixConn, p, "IndexServer Scripting Base/Services");                    
 
                 dicAlls.putAll(dicAll);
                 dicAllRhinos.putAll(dicAllRhino);
                 dicIndexServerScriptingBases.putAll(dicIndexServerScriptingBase);                
-                dicELOasBases.putAll(dicELOasBase);                                 
+                dicELOasBases.putAll(dicELOasBase);  
+                
+                dicELOixActions.putAll(dicELOixAction);  
+                dicELOixDynKwls.putAll(dicELOixDynKwl);  
+                dicELOixFunctions.putAll(dicELOixFunction);  
+                dicELOixServices.putAll(dicELOixService);  
+                
             }); 
             
         }
@@ -920,6 +947,11 @@ class UnittestUtils {
         CreateUnittestLibs(dicAllRhinos, solutionName, "All Rhino", "lib");
         CreateUnittestLibs(dicIndexServerScriptingBases, solutionName, "IndexServer Scripting Base", "libix");
         CreateUnittestLibs(dicELOasBases, solutionName, "ELOas Base/OptionalJsLibs", "libas");
+        
+        CreateUnittestLibs(dicELOixActions, solutionName, "IndexServer Scripting Base/Actions", "ixactions");
+        CreateUnittestLibs(dicELOixDynKwls, solutionName, "IndexServer Scripting Base/DynKwl", "ixdynkwls");
+        CreateUnittestLibs(dicELOixFunctions, solutionName, "IndexServer Scripting Base/Functions", "ixfunctions");
+        CreateUnittestLibs(dicELOixServices, solutionName, "IndexServer Scripting Base/Services", "ixservices");
         
         Platform.runLater(() -> {
             EloTest.showAlert("Achtung!", "CreateUnittest", "Unittests created");
