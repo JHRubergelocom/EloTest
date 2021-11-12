@@ -150,16 +150,6 @@ class UnittestUtils {
         String className = "";
         String method = "";
         for (Map.Entry<String, List<String>> entryJsText : jsTexts.entrySet()) {
-            if (entryJsText.getKey().contains("[action]")) {
-                continue;
-            }
-            if (entryJsText.getKey().contains("[function]")) {
-                continue;
-            }
-            if (entryJsText.getKey().contains("[service]")) {
-                continue;
-            }            
-            
             for (String line : entryJsText.getValue()) {
                 if (line.contains("className")){
                     String[] words = line.split(":");
