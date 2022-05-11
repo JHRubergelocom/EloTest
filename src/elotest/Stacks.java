@@ -28,7 +28,7 @@ class Stacks {
     private String user;
     private String pwd;    
     
-    Stacks(String jsonFile) {
+    Stacks(String jsonFile) throws JSONException {
         stacks = new TreeMap<>();
         gitSolutionsDir = "";
         gitDevDir = "";

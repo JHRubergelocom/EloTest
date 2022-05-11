@@ -1,8 +1,8 @@
 #EloProperties
-#Fri Nov 12 12:44:29 CET 2021
+#Wed May 11 14:53:47 CEST 2022
 CaseSensitiv=true
 SelectedEloServices=Admin Console
-SelectedStack=ruberg-common
+SelectedStack=ruberg-meeting
 Pattern=addInjections
 SelectedEloCli=eloPrepare
 SelectedUnittestTools=matching

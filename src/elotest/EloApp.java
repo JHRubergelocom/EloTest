@@ -10,6 +10,7 @@ import de.elo.ix.client.Sord;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.application.Platform;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -18,7 +19,7 @@ import org.json.JSONObject;
  */
 class EloApp {
     
-    private static Map<String, String> GetUnittestApp(IXConnection ixConn) {
+    private static Map<String, String> GetUnittestApp(IXConnection ixConn) throws JSONException {
         String parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/development/ELOapps/ClientInfos";
         Sord[] sordELOappsClientInfo = RepoUtils.FindChildren(ixConn, parentId, false, true);
         String configApp = "";
@@ -47,7 +48,7 @@ class EloApp {
         return dicApp;
     }    
 
-    static void ShowUnittests(IXConnection ixConn) {
+    static void ShowUnittests(IXConnection ixConn) throws JSONException {
         String ticket = ixConn.getLoginResult().getClientInfo().getTicket();            
         String ixUrl = ixConn.getEndpointUrl();
         String appUrl = ixUrl.replaceAll("ix-", "wf-");
@@ -119,7 +120,7 @@ class EloApp {
         Http.OpenUrl(webclientUrl);
     }
 
-    private static Map<String, String> GetKnowledgeBoard(IXConnection ixConn) {
+    private static Map<String, String> GetKnowledgeBoard(IXConnection ixConn) throws JSONException {
         String parentId = "ARCPATH[(E10E1000-E100-E100-E100-E10E10E10E00)]:/Business Solutions/knowledge/ELOapps/ClientInfos";
         Sord[] sordELOappsClientInfo = RepoUtils.FindChildren(ixConn, parentId, false, true);
         String configApp = "";
@@ -148,7 +149,7 @@ class EloApp {
         return dicApp;
     }
 
-    static void ShowKnowledgeBoard(IXConnection ixConn) {
+    static void ShowKnowledgeBoard(IXConnection ixConn) throws JSONException {
         String ticket = ixConn.getLoginResult().getClientInfo().getTicket();
         String ixUrl = ixConn.getEndpointUrl();
         String appUrl = ixUrl.replace("ix-", "wf-");

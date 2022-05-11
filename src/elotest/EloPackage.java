@@ -19,7 +19,7 @@ class EloPackage {
     private String name;
     private Map<String, String> folders;
     
-    EloPackage(JSONObject obj) {
+    EloPackage(JSONObject obj) throws JSONException {
         name = "";
         folders = new HashMap<>();
         
@@ -27,13 +27,9 @@ class EloPackage {
             name = obj.getString("name");            
         } catch (JSONException ex) {            
         }
-        try {
-            String[] jarrayfolders = JsonUtils.getStringArray(obj, "folders");
-            for(String folder: jarrayfolders){
-                folders.put(folder, folder);
-            }
-        } catch (JSONException ex) { 
-            folders = new HashMap<>();
+        String[] jarrayfolders = JsonUtils.getStringArray(obj, "folders");
+        for(String folder: jarrayfolders){
+            folders.put(folder, folder);
         }
     }    
     EloPackage() {

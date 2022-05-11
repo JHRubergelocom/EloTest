@@ -22,6 +22,7 @@ import java.util.Scanner;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -82,7 +83,7 @@ class EloService extends Service<Boolean>{
         });        
     }
     
-    private void executeEloCli() {
+    private void executeEloCli() throws JSONException {
         try {
             setProgress(0.0, "Start!", "");
             String psCommand = eloCommand.getCmd() + " -stack " + stack.getStack() + " -workspace " + eloCommand.getWorkspace();
@@ -178,7 +179,7 @@ class EloService extends Service<Boolean>{
         }         
     }
 
-    private void executeUnittestTools() {
+    private void executeUnittestTools() throws JSONException {
         switch(unittestTool) {
             case "show":                
                 EloApp.ShowUnittests(ixConn);
@@ -213,7 +214,7 @@ class EloService extends Service<Boolean>{
         }            
     }
 
-    private void executeEloServices() {
+    private void executeEloServices() throws JSONException {
         switch(eloService) {
             case "Application Server":
                 EloApp.ShowEloApplicationServer(ixConn);

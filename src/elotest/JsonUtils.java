@@ -16,7 +16,7 @@ import org.json.JSONObject;
  * @author ruberg
  */
 class JsonUtils {
-    public static JSONObject[] getArray (JSONObject jobj, String key) {
+    public static JSONObject[] getArray (JSONObject jobj, String key) throws JSONException {
         JSONArray jarr = jobj.getJSONArray(key);
         JSONObject jobjs[] = new JSONObject[jarr.length()];
         for (int i = 0; i < jarr.length(); i++) {
@@ -24,7 +24,7 @@ class JsonUtils {
         } 
         return jobjs;
     }
-    public static String[] getStringArray (JSONObject jobj, String key) {
+    public static String[] getStringArray (JSONObject jobj, String key) throws JSONException {
         JSONArray jarr = jobj.getJSONArray(key);
         String jstrings[] = new String[jarr.length()];
         for (int i = 0; i < jarr.length(); i++) {

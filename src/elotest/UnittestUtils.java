@@ -407,6 +407,22 @@ class UnittestUtils {
                     }
                 }  
                 
+                if (method.contains("throw Error")) {
+                    continue;
+                }   
+                
+                if (method.contains("logger.enter(")) {
+                    continue;
+                }   
+                
+                if (method.contains("sol.create")) {
+                    continue;
+                }   
+                
+                if (method.contains("(Array.isArray")) {
+                    continue;
+                }   
+                
                 // TODO
                 boolean match = false;
                 if(dicTestedLibs.containsKey(className)){

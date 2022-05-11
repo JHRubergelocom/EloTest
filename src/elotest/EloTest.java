@@ -28,6 +28,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.json.JSONException;
 
 /**
  *
@@ -38,7 +39,7 @@ public class EloTest extends Application {
     static final String LISTVIEW_STYLE = "-fx-font-style: regular; -fx-font-size: 14px";
     static final String TEXTFIELD_STYLE = "-fx-font-style: regular; -fx-font-size: 12px";
     
-    private final Stacks stacks = new Stacks("Stacks.json");
+    private final Stacks stacks;
     private final EloProperties eloProperties = new EloProperties();
     private final EloService eloService = new EloService();
     
@@ -61,6 +62,10 @@ public class EloTest extends Application {
 
     private final ProgressBar pgBar = new ProgressBar(0);
     private final TextField txtProgress = new TextField();
+
+    public EloTest() throws JSONException {
+        this.stacks = new Stacks("Stacks.json");
+    }
     
     private void fillListView(Label label, String lblText, ListView<String> listview, List <String> entries) {
         label.setText(lblText);
