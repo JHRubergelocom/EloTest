@@ -293,6 +293,13 @@ class UnittestUtils {
                 continue;
             }   
 
+            if (className.equals("businesspartner.common.example.myOtherInstance")) {
+                continue;
+            }   
+
+            if (className.equals("sol.common.instance")) {
+                continue;
+            }   
             
             // TODO
             for (Map.Entry<String, List<String>> entryMethod : entryClass.getValue().entrySet()) {
@@ -422,6 +429,18 @@ class UnittestUtils {
                 if (method.contains("(Array.isArray")) {
                     continue;
                 }   
+                if (method.contains(".filter(")) {
+                    continue;
+                }                   
+                if (method.contains("elements.forEach(")) {
+                    continue;
+                }                   
+                if (method.contains("throw")) {
+                    continue;
+                }                   
+                if (method.contains("logger")) {
+                    continue;
+                }                   
                 
                 // TODO
                 boolean match = false;
